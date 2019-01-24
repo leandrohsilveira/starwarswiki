@@ -5,7 +5,9 @@ function LayoutHeader({ title }) {
   return (
     <Navbar color="primary" dark>
       <Container>
-        <NavbarBrand href="/">Star Wars Wiki - {title}</NavbarBrand>
+        <NavbarBrand href="/">
+          Star Wars Wiki {title ? `- ${title}` : ""}
+        </NavbarBrand>
       </Container>
     </Navbar>
   );
