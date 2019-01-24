@@ -12,6 +12,7 @@
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
