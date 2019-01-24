@@ -1,7 +1,15 @@
 import React from "react";
+import { Container } from "reactstrap";
 
-function Layout({ children }) {
-  return <div>{children}</div>;
+import LayoutHeader from "./LayoutHeader";
+
+function Layout({ title, children }) {
+  return (
+    <React.Fragment>
+      <LayoutHeader title={title} />
+      <Container className="mt-5">{children}</Container>
+    </React.Fragment>
+  );
 }
 
 export default Layout;
