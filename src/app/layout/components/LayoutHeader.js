@@ -5,7 +5,7 @@ import { Navbar, NavbarBrand, Container } from 'reactstrap';
 
 function LayoutHeader({ title }) {
   return (
-    <Navbar color="primary" dark>
+    <Navbar color="secondary" dark>
       <Container>
         <NavbarBrand href="/">
           Star Wars Wiki
