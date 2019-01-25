@@ -1,7 +1,8 @@
-import React from "react";
-import { Container } from "reactstrap";
+import React from 'react';
+import { Container } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-import LayoutHeader from "./LayoutHeader";
+import LayoutHeader from './LayoutHeader';
 
 function Layout({ title, children }) {
   return (
@@ -11,5 +12,15 @@ function Layout({ title, children }) {
     </React.Fragment>
   );
 }
+
+Layout.propTypes = {
+  title: PropTypes.string,
+  children: PropTypes.node,
+};
+
+Layout.defaultProps = {
+  title: '',
+  children: null,
+};
 
 export default Layout;

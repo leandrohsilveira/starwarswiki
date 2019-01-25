@@ -1,12 +1,12 @@
-import { combineReducers } from "redux";
-import layoutReducer, { layoutInitialState } from "app/layout/reducer";
+import { combineReducers } from 'redux';
+import layoutReducer, { layoutInitialState } from 'app/layout/reducer';
 
 export const initialState = {
-  layout: layoutInitialState
+  layout: layoutInitialState,
 };
 
 const reducers = combineReducers({
-  layout: layoutReducer
+  layout: layoutReducer,
 });
 
 export default reducers;

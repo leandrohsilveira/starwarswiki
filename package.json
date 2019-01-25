@@ -5,6 +5,7 @@
     "dependencies": {
         "bootstrap": "^4.2.1",
         "node-sass": "^4.11.0",
+        "prop-types": "^15.6.2",
         "react": "next",
         "react-app-rewired": "^2.0.2",
         "react-dom": "next",

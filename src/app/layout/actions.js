@@ -1,10 +1,10 @@
 const layoutActionsTypes = {
-  CHANGE_TITLE: "[Layout] Change title"
+  CHANGE_TITLE: '[Layout] Change title',
 };
 
 export const changeTitle = title => ({
   type: layoutActionsTypes.CHANGE_TITLE,
-  title
+  title,
 });
 
 export default layoutActionsTypes;

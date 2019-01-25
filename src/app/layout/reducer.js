@@ -1,7 +1,7 @@
-import layoutActionsTypes from "./actions";
+import layoutActionsTypes from './actions';
 
 export const layoutInitialState = {
-  title: ""
+  title: '',
 };
 
 function layoutReducer(state = layoutInitialState, { type, ...payload }) {
@@ -9,7 +9,7 @@ function layoutReducer(state = layoutInitialState, { type, ...payload }) {
     case layoutActionsTypes.CHANGE_TITLE:
       return {
         ...state,
-        title: payload.title
+        title: payload.title,
       };
     default:
       return state;

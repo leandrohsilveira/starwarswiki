@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import useStore from "./useStore";
+import { useMemo } from 'react';
+import useStore from './useStore';
 
 function useStoreStateSelector(selector, args) {
   const [state] = useStore();
@@ -10,7 +10,7 @@ function useStoreStateSelector(selector, args) {
       const selectorArgs = args ? [state, ...args] : [state];
       return selector.apply(selector, selectorArgs);
     },
-    [memoTrigger]
+    [memoTrigger],
   );
 }
 
