@@ -16,4 +16,6 @@ function layoutReducer(state = layoutInitialState, { type, ...payload }) {
   }
 }
 
+export const layoutSelector = state => state.layout;
+
 export default layoutReducer;
