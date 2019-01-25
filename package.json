@@ -13,7 +13,8 @@
     "reactstrap": "^7.1.0",
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "yarn": "^1.13.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -29,5 +30,13 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-jsx-a11y": "^6.2.0",
+    "eslint-plugin-react": "^7.12.4"
+  }
 }
