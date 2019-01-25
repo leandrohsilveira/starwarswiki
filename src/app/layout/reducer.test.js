@@ -1,4 +1,7 @@
-import layoutReducer, { layoutInitialState } from "app/layout/reducer";
+import layoutReducer, {
+  layoutInitialState,
+  layoutSelector
+} from "app/layout/reducer";
 import layoutActionsTypes, { changeTitle } from "./actions";
 
 describe("The layout module reducer", () => {
@@ -52,5 +55,13 @@ describe("The layout module reducer", () => {
         expect(result).not.toBe(layoutInitialState);
       });
     });
+  });
+});
+
+describe("The layoutState selector", () => {
+  it('selects the "layout" prop from root state', () => {
+    const rootState = { layout: layoutInitialState };
+    const result = layoutSelector(rootState);
+    expect(result).toBe(layoutInitialState);
   });
 });
