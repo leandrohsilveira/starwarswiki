@@ -11,6 +11,19 @@ function tasksReducer(state = tasksInitialState, { type, ...payload }) {
         ...state,
         tasks: [...state.tasks, payload.task],
       };
+    case tasksActionsTypes.COMPLETE:
+      return {
+        ...state,
+        tasks: state.tasks.map((task) => {
+          if (task === payload.task) {
+            return {
+              ...task,
+              running: false,
+            };
+          }
+          return task;
+        }),
+      };
     default:
       return state;
   }
