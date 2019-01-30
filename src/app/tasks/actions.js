@@ -1,5 +1,6 @@
 const tasksActionsTypes = {
   SUBMIT: '[Tasks] Submit task',
+  COMPLETE: '[Tasks] Complete task',
 };
 
 export const submitTask = task => ({
@@ -8,6 +9,11 @@ export const submitTask = task => ({
     ...task,
     running: true,
   },
+});
+
+export const completeTask = task => ({
+  type: tasksActionsTypes.COMPLETE,
+  task,
 });
 
 export default tasksActionsTypes;
