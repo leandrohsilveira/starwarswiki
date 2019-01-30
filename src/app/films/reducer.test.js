@@ -1,4 +1,3 @@
-import layoutActionsTypes from 'app/layout/actions';
 import filmsReducer, { filmsInitialState, filmsSelector } from './reducer';
 import filmsActionsTypes, { loadFilms, filmsLoaded } from './actions';
 
@@ -17,7 +16,7 @@ describe('The films module reducer', () => {
     });
   });
 
-  describe(`when a "${layoutActionsTypes.LOAD}" action is provided`, () => {
+  describe(`when a "${filmsActionsTypes.LOAD}" action is provided`, () => {
     const action = loadFilms();
 
     describe('and with initial state', () => {
@@ -40,7 +39,7 @@ describe('The films module reducer', () => {
     });
   });
 
-  describe(`when a "${layoutActionsTypes.LOADED}" action is provided`, () => {
+  describe(`when a "${filmsActionsTypes.LOADED}" action is provided`, () => {
     const films = [{ name: 'Name' }];
     const action = filmsLoaded(films);
 
