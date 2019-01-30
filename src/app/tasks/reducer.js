@@ -9,4 +9,6 @@ function tasksReducer(state = tasksInitialState, { type }) {
   }
 }
 
+export const tasksSelector = state => state.tasks;
+
 export default tasksReducer;

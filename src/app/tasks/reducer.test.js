@@ -20,6 +20,6 @@ describe('The tasks state selector', () => {
   it('selects the "tasks" prop from root state', () => {
     const rootState = featureInitialState;
     const result = tasksSelector(rootState);
-    expect(result).toBe(rootState.films);
+    expect(result).toBe(rootState.tasks);
   });
 });
