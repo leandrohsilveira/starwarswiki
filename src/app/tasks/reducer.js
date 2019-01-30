@@ -24,6 +24,11 @@ function tasksReducer(state = tasksInitialState, { type, ...payload }) {
           return task;
         }),
       };
+    case tasksActionsTypes.CLEAR:
+      return {
+        ...state,
+        tasks: state.tasks.filter(task => task.running || task !== payload.task),
+      };
     default:
       return state;
   }
