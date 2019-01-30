@@ -1,5 +1,5 @@
 import tasksReducer, { tasksInitialState, tasksSelector } from './reducer';
-import tasksActionsTypes, { submitTask } from './actions';
+import tasksActionsTypes, { submitTask, completeTask } from './actions';
 
 const featureInitialState = {
   tasks: tasksInitialState,
@@ -55,6 +55,48 @@ describe('The tasks module reducer', () => {
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
       expect(result.tasks[0].running).toBeTruthy();
+    });
+  });
+
+  describe(`when a "${tasksActionsTypes.COMPLETE}" action is provided`, () => {
+    const task = {
+      id: 'fetchUser',
+      name: 'Fetching user data',
+      effect: { type: 'Effect action' },
+      running: true,
+    };
+    const state = {
+      ...tasksInitialState,
+      tasks: [task],
+    };
+    const action = completeTask(task);
+
+    it(`it reducers to a state with a task with an effect of "${task.effect.type}" action`, () => {
+      const result = tasksReducer(state, action);
+      expect(result).toBeTruthy();
+      expect(result.tasks[0]).toBeTruthy();
+      expect(result.tasks[0].effect).toEqual(task.effect);
+    });
+
+    it('it reducers to a state with a task with "fetchUser" ID', () => {
+      const result = tasksReducer(state, action);
+      expect(result).toBeTruthy();
+      expect(result.tasks[0]).toBeTruthy();
+      expect(result.tasks[0].id).toEqual('fetchUser');
+    });
+
+    it('it reducers to a state with a task with "Fetching user data" name', () => {
+      const result = tasksReducer(state, action);
+      expect(result).toBeTruthy();
+      expect(result.tasks[0]).toBeTruthy();
+      expect(result.tasks[0].name).toEqual('Fetching user data');
+    });
+
+    it('it reducers to a state with a running task', () => {
+      const result = tasksReducer(state, action);
+      expect(result).toBeTruthy();
+      expect(result.tasks[0]).toBeTruthy();
+      expect(result.tasks[0].running).toBeFalsy();
     });
   });
 });
