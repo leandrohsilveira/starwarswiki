@@ -2,11 +2,12 @@ const tasksActionsTypes = {
   SUBMIT: '[Tasks] Submit task',
 };
 
-export const submitTask = ({ id, name, effect }) => ({
+export const submitTask = task => ({
   type: tasksActionsTypes.SUBMIT,
-  id,
-  name,
-  effect,
+  task: {
+    ...task,
+    running: true,
+  },
 });
 
 export default tasksActionsTypes;
