@@ -1,6 +1,7 @@
 const tasksActionsTypes = {
   SUBMIT: '[Tasks] Submit task',
   COMPLETE: '[Tasks] Complete task',
+  CLEAR: '[Tasks] Clear task',
 };
 
 export const submitTask = task => ({
@@ -13,6 +14,11 @@ export const submitTask = task => ({
 
 export const completeTask = task => ({
   type: tasksActionsTypes.COMPLETE,
+  task,
+});
+
+export const clearTask = task => ({
+  type: tasksActionsTypes.CLEAR,
   task,
 });
 
