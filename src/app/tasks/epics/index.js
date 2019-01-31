@@ -1,5 +1,6 @@
 import { combineEpics } from 'redux-observable';
+import onSubmitTask from './onSubmitTask';
 
-const tasksEpics = combineEpics();
+const tasksEpics = combineEpics(onSubmitTask);
 
 export default tasksEpics;
