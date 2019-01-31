@@ -18,7 +18,7 @@ describe('The LayoutHeader component', () => {
     it('it renders a "Star Wars Wiki - Wellcome" text as title', () => {
       const { getByText } = render(<LayoutHeader title="Wellcome" />);
 
-      const element = getByText('Star Wars Wiki - Wellcome');
+      const element = getByText('Wellcome');
 
       expect(element).toBeTruthy();
     });
