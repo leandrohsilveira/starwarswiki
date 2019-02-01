@@ -1,5 +1,5 @@
 import filmsReducer, { filmsInitialState, filmsSelector } from './reducer';
-import filmsActionsTypes, { loadFilms, filmsLoaded } from './actions';
+import filmsActionsTypes, { loadFilms, filmsLoaded, fetchFilmsPage } from './actions';
 
 const featureInitialState = {
   films: filmsInitialState,
@@ -72,6 +72,16 @@ describe('The films module reducer', () => {
         const result = filmsReducer(state, action);
         expect(result.loading).toBeFalsy();
       });
+    });
+  });
+
+  describe(`when a "${filmsActionsTypes.FETCH_PAGE}" action is provided`, () => {
+    const action = fetchFilmsPage();
+
+    it('it reduces to same state instance', () => {
+      const state = filmsInitialState;
+      const result = filmsReducer(state, action);
+      expect(result).toBe(state);
     });
   });
 });
