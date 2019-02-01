@@ -38,5 +38,21 @@ describe('onSubmitTask epic', () => {
           }
         });
     });
+
+    it('it effects to a action with a reference to the task ("meta.task" prop)', (done) => {
+      actions$.next(action);
+      combineLatest(actions$, onSubmitTask(actions$), tasksEpics(actions$))
+        .pipe(take(1))
+        .subscribe(([latestAction, onSubmitTaskEffect, tasksEpicsEffect]) => {
+          try {
+            expect(latestAction.meta).toBeFalsy();
+            expect(onSubmitTaskEffect.meta.task).toBe(latestAction.task);
+            expect(tasksEpicsEffect.meta.task).toBe(latestAction.task);
+            done();
+          } catch (e) {
+            done.fail(e);
+          }
+        });
+    });
   });
 });
