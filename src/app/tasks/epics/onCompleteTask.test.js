@@ -1,9 +1,19 @@
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { take, skip } from 'rxjs/operators';
+import {
+  BehaviorSubject, combineLatest, pipe, of,
+} from 'rxjs';
+import {
+  take, skip, timeout, catchError,
+} from 'rxjs/operators';
 import onCompleteTask from './onCompleteTask';
 import tasksActionsTypes, { completeTask } from '../actions';
 import tasksEpics from '.';
 
+function notCalledIn(timout) {
+  return pipe(
+    timeout(timout),
+    catchError(() => of('not called')),
+  );
+}
 describe('onCompleteTask epic', () => {
   const task = {
     id: 'fetchUser',
@@ -57,7 +67,7 @@ describe('onCompleteTask epic', () => {
         });
     });
 
-    describe('if contextChanged is false and successful is true', () => {
+    describe('if successful is true and contextChanged is true', () => {
       const completion = mockCompletion(true, false);
       const action = completeTask(task, completion);
 
@@ -76,7 +86,7 @@ describe('onCompleteTask epic', () => {
               expect(tasksEpicsEffect.type).toEqual(tasksActionsTypes.CLEAR);
               done();
             } catch (e) {
-              done.fail();
+              done.fail(e);
             }
           });
       });
@@ -94,6 +104,68 @@ describe('onCompleteTask epic', () => {
               expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
               expect(onCompleteTaskEffect.task).toEqual(action.task);
               expect(tasksEpicsEffect.task).toEqual(action.task);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+    });
+
+    describe('if successful and contextChanged are both true', () => {
+      const completion = mockCompletion(true, true);
+      const action = completeTask(task, completion);
+
+      it('it does not effect', (done) => {
+        actions$.next(action);
+        combineLatest(
+          actions$,
+          onCompleteTask(actions$).pipe(
+            skip(1),
+            notCalledIn(200),
+          ),
+          tasksEpics(actions$).pipe(
+            skip(1),
+            notCalledIn(200),
+          ),
+        )
+          .pipe(take(1))
+          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+            try {
+              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+              expect(onCompleteTaskEffect).toEqual('not called');
+              expect(tasksEpicsEffect).toEqual('not called');
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+    });
+
+    describe('if successful and contextChanged are both false', () => {
+      const completion = mockCompletion(false, false);
+      const action = completeTask(task, completion);
+
+      it('it does not effect', (done) => {
+        actions$.next(action);
+        combineLatest(
+          actions$,
+          onCompleteTask(actions$).pipe(
+            skip(1),
+            notCalledIn(200),
+          ),
+          tasksEpics(actions$).pipe(
+            skip(1),
+            notCalledIn(200),
+          ),
+        )
+          .pipe(take(1))
+          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+            try {
+              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+              expect(onCompleteTaskEffect).toEqual('not called');
+              expect(tasksEpicsEffect).toEqual('not called');
               done();
             } catch (e) {
               done.fail(e);
