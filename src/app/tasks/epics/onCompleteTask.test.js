@@ -1,5 +1,5 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, skip } from 'rxjs/operators';
 import onCompleteTask from './onCompleteTask';
 import tasksActionsTypes, { completeTask } from '../actions';
 import tasksEpics from '.';
@@ -12,20 +12,21 @@ describe('onCompleteTask epic', () => {
     running: true,
   };
 
-  const completion = {
-    successful: true,
-    contextChanged: false,
-    effect: {
-      type: 'userFetched',
-      user: {
-        id: 1,
-        username: 'admin',
-        name: 'Administrator',
+  function mockCompletion(successful, contextChanged) {
+    return {
+      successful,
+      contextChanged,
+      effect: {
+        type: 'userFetched',
+        user: {
+          id: 1,
+          username: 'admin',
+          name: 'Administrator',
+        },
       },
-    },
-  };
+    };
+  }
 
-  const action = completeTask(task, completion);
   let actions$;
 
   beforeEach(() => {
@@ -38,6 +39,8 @@ describe('onCompleteTask epic', () => {
 
   describe(`when a "${tasksActionsTypes.COMPLETE}" action is provided`, () => {
     it('it effects to the action with the type of the "effect" prop of the completion', (done) => {
+      const completion = mockCompletion(true, true);
+      const action = completeTask(task, completion);
       actions$.next(action);
 
       combineLatest(actions$, onCompleteTask(actions$), tasksEpics(actions$))
@@ -49,9 +52,54 @@ describe('onCompleteTask epic', () => {
             expect(tasksEpicsEffect.type).toEqual(completion.effect.type);
             done();
           } catch (e) {
-            done.fail();
+            done.fail(e);
           }
         });
+    });
+
+    describe('if contextChanged is false and successful is true', () => {
+      const completion = mockCompletion(true, false);
+      const action = completeTask(task, completion);
+
+      it(`it effects to an action with "${tasksActionsTypes.CLEAR}" type`, (done) => {
+        actions$.next(action);
+        combineLatest(
+          actions$,
+          onCompleteTask(actions$).pipe(skip(1)),
+          tasksEpics(actions$).pipe(skip(1)),
+        )
+          .pipe(take(1))
+          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+            try {
+              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+              expect(onCompleteTaskEffect.type).toEqual(tasksActionsTypes.CLEAR);
+              expect(tasksEpicsEffect.type).toEqual(tasksActionsTypes.CLEAR);
+              done();
+            } catch (e) {
+              done.fail();
+            }
+          });
+      });
+
+      it('it effects to an action with a "task" prop that is the completed task', (done) => {
+        actions$.next(action);
+        combineLatest(
+          actions$,
+          onCompleteTask(actions$).pipe(skip(1)),
+          tasksEpics(actions$).pipe(skip(1)),
+        )
+          .pipe(take(2))
+          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+            try {
+              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+              expect(onCompleteTaskEffect.task).toEqual(action.task);
+              expect(tasksEpicsEffect.task).toEqual(action.task);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
     });
   });
 });
