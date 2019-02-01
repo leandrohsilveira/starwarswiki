@@ -1,41 +1,42 @@
 {
-    "name": "starwarswiki",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "bootstrap": "^4.2.1",
-        "node-sass": "^4.11.0",
-        "prop-types": "^15.6.2",
-        "react": "next",
-        "react-app-rewired": "^2.0.2",
-        "react-dom": "next",
-        "react-redux": "^6.0.0",
-        "react-scripts": "2.1.3",
-        "react-testing-library": "^5.4.4",
-        "reactstrap": "^7.1.0",
-        "redux": "^4.0.1",
-        "redux-observable": "^1.0.0",
-        "rxjs": "^6.3.3",
-        "yarn": "^1.13.0"
-    },
-    "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": [
-        ">0.2%",
-        "not dead",
-        "not ie <= 11",
-        "not op_mini all"
-    ],
-    "devDependencies": {
-        "eslint-config-airbnb": "^17.1.0",
-        "eslint-plugin-import": "^2.15.0",
-        "eslint-plugin-jsx-a11y": "^6.2.0",
-        "eslint-plugin-react": "^7.12.4"
-    }
+  "name": "starwarswiki",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^4.2.1",
+    "node-sass": "^4.11.0",
+    "prop-types": "^15.6.2",
+    "react": "next",
+    "react-app-rewired": "^2.0.2",
+    "react-dom": "next",
+    "react-redux": "^6.0.0",
+    "react-scripts": "2.1.3",
+    "react-testing-library": "^5.4.4",
+    "reactstrap": "^7.1.0",
+    "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
+    "rxjs": "^6.3.3",
+    "yarn": "^1.13.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "coverage": "react-scripts test --coverage"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-jsx-a11y": "^6.2.0",
+    "eslint-plugin-react": "^7.12.4"
+  }
 }

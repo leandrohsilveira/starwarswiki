@@ -11,8 +11,7 @@ function LayoutHeader({ title }) {
       <Navbar className="sticky-top" color="secondary" dark>
         <Container>
           <NavbarBrand href="/">
-            Star Wars Wiki
-            {title ? `- ${title}` : ''}
+            {title || 'Star Wars Wiki'}
           </NavbarBrand>
         </Container>
       </Navbar>
