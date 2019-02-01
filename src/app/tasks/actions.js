@@ -12,9 +12,12 @@ export const submitTask = task => ({
   },
 });
 
-export const completeTask = task => ({
+export const completeTask = (task, { successful, contextChanged, effect } = {}) => ({
   type: tasksActionsTypes.COMPLETE,
   task,
+  successful,
+  contextChanged,
+  effect,
 });
 
 export const clearTask = task => ({
