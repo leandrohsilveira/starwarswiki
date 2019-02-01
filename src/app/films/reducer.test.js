@@ -17,17 +17,18 @@ describe('The films module reducer', () => {
   });
 
   describe(`when a "${filmsActionsTypes.LOAD}" action is provided`, () => {
-    const action = loadFilms();
-
-    describe('and with initial state', () => {
+    describe('with initial state', () => {
+      const action = loadFilms();
       it('it reduces to a state with "loading" true', () => {
         const state = filmsInitialState;
         const result = filmsReducer(state, action);
         expect(result.loading).toBeTruthy();
+        expect(result.loaded).toBeFalsy();
       });
     });
 
-    describe('and with a truthy "loading" state', () => {
+    describe('with a truthy "loading" state', () => {
+      const action = loadFilms();
       it('it reduces to a state with "loading" true', () => {
         const state = {
           ...filmsInitialState,
@@ -35,6 +36,31 @@ describe('The films module reducer', () => {
         };
         const result = filmsReducer(state, action);
         expect(result.loading).toBeTruthy();
+        expect(result.loaded).toBeFalsy();
+      });
+    });
+
+    describe('with a pageable action prop', () => {
+      const state = {
+        ...filmsInitialState,
+        pageable: {
+          page: 0,
+          limit: 10,
+        },
+      };
+      const pageable = {
+        page: 1,
+        limit: 20,
+      };
+      const action = loadFilms(pageable);
+      it('it reduces to a state with the pageable of the action', () => {
+        const result = filmsReducer(state, action);
+        expect(result.pageable).toEqual(pageable);
+      });
+
+      it('it reduces to a state with a different pageable of the previous state', () => {
+        const result = filmsReducer(state, action);
+        expect(result.pageable).not.toEqual(state.pageable);
       });
     });
   });
@@ -43,7 +69,7 @@ describe('The films module reducer', () => {
     const films = [{ name: 'Name' }];
     const action = filmsLoaded(films);
 
-    describe('and with initial state', () => {
+    describe('with initial state', () => {
       it('it reduces to a state with "films" array not empty', () => {
         const state = filmsInitialState;
         const result = filmsReducer(state, action);
@@ -57,7 +83,7 @@ describe('The films module reducer', () => {
       });
     });
 
-    describe('and with a truthy "loading" state', () => {
+    describe('with a truthy "loading" state', () => {
       it('it reduces to a state with "films" array not empty', () => {
         const state = filmsInitialState;
         const result = filmsReducer(state, action);
