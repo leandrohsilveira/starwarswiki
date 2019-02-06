@@ -89,7 +89,7 @@ describe('onCompleteTask epic', () => {
           mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
           mockEpic(tasksEpics(actions$)).pipe(skip(1)),
         )
-          .pipe(take(2))
+          .pipe(take(1))
           .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
             try {
               expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
