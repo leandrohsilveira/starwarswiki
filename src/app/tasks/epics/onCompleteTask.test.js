@@ -1,19 +1,10 @@
-import {
-  BehaviorSubject, combineLatest, pipe, of,
-} from 'rxjs';
-import {
-  take, skip, timeout, catchError,
-} from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import { take, skip } from 'rxjs/operators';
+import mockEpic from '__test-utils__/rxjs.utils';
 import onCompleteTask from './onCompleteTask';
 import tasksActionsTypes, { completeTask } from '../actions';
 import tasksEpics from '.';
 
-function notCalledIn(timout) {
-  return pipe(
-    timeout(timout),
-    catchError(() => of('not called')),
-  );
-}
 describe('onCompleteTask epic', () => {
   const task = {
     id: 'fetchUser',
@@ -53,7 +44,7 @@ describe('onCompleteTask epic', () => {
       const action = completeTask(task, completion);
       actions$.next(action);
 
-      combineLatest(actions$, onCompleteTask(actions$), tasksEpics(actions$))
+      combineLatest(actions$, mockEpic(onCompleteTask(actions$)), mockEpic(tasksEpics(actions$)))
         .pipe(take(1))
         .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
           try {
@@ -75,8 +66,8 @@ describe('onCompleteTask epic', () => {
         actions$.next(action);
         combineLatest(
           actions$,
-          onCompleteTask(actions$).pipe(skip(1)),
-          tasksEpics(actions$).pipe(skip(1)),
+          mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
         )
           .pipe(take(1))
           .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
@@ -95,8 +86,8 @@ describe('onCompleteTask epic', () => {
         actions$.next(action);
         combineLatest(
           actions$,
-          onCompleteTask(actions$).pipe(skip(1)),
-          tasksEpics(actions$).pipe(skip(1)),
+          mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
         )
           .pipe(take(2))
           .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
@@ -120,14 +111,8 @@ describe('onCompleteTask epic', () => {
         actions$.next(action);
         combineLatest(
           actions$,
-          onCompleteTask(actions$).pipe(
-            skip(1),
-            notCalledIn(200),
-          ),
-          tasksEpics(actions$).pipe(
-            skip(1),
-            notCalledIn(200),
-          ),
+          mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
         )
           .pipe(take(1))
           .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
@@ -151,14 +136,8 @@ describe('onCompleteTask epic', () => {
         actions$.next(action);
         combineLatest(
           actions$,
-          onCompleteTask(actions$).pipe(
-            skip(1),
-            notCalledIn(200),
-          ),
-          tasksEpics(actions$).pipe(
-            skip(1),
-            notCalledIn(200),
-          ),
+          mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
         )
           .pipe(take(1))
           .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
