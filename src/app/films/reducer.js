@@ -1,7 +1,7 @@
 import filmsActionsTypes from './actions';
 
 export const filmsInitialState = {
-  films: [],
+  films: {},
   loading: false,
   loaded: false,
   pageable: {
