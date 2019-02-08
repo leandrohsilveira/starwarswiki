@@ -1,6 +1,7 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import mockEpic from '__test-utils__/rxjs.utils';
+import mockLocalStorage from 'src/__test-utils__/localStorage.utils';
 import onLoadFilms from './onLoadFilms';
 import filmsActionsTypes, { loadFilms } from '../actions';
 import filmsEpics from '.';
@@ -93,13 +94,14 @@ describe('onLoadFilms epic', () => {
         });
       });
 
-      describe('and pageable is present in films map', () => {
+      describe('and pageable is present in films map with "films#1#10" key', () => {
+        const filmsArray = [{ name: 'Film 1' }];
         beforeEach(() => {
           store$.next({
             films: {
               ...featureInitialState.films,
               films: {
-                'films#1#10': [{ name: 'Film 1' }],
+                'films#1#10': filmsArray,
               },
             },
           });
@@ -127,21 +129,72 @@ describe('onLoadFilms epic', () => {
 
         it('it effects to a action with a "films" array as payload', (done) => {
           combineLatest(
-            store$,
             mockEpic(onLoadFilms(actions$, store$)),
             mockEpic(filmsEpics(actions$, store$)),
           )
             .pipe(take(1))
-            .subscribe(([store, onLoadFilmsEffect, filmsEpicsEffect]) => {
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
                 expect(onLoadFilmsEffect.films).toBeTruthy();
                 expect(onLoadFilmsEffect.films.length).toBeTruthy();
-                expect(onLoadFilmsEffect.films[0].name).toBe(
-                  store.films.films['page#1#10'][0].name,
-                );
+                expect(onLoadFilmsEffect.films[0].name).toBe(filmsArray[0].name);
                 expect(filmsEpicsEffect.films).toBeTruthy();
                 expect(filmsEpicsEffect.films.length).toBeTruthy();
-                expect(filmsEpicsEffect.films[0].name).toBe(store.films.films['page#1#10'][0].name);
+                expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            });
+        });
+      });
+
+      describe('and pageable is local storage with "films#1#10" key', () => {
+        const filmsArray = [{ name: 'Film 1' }];
+        beforeEach(() => {
+          mockLocalStorage({
+            'films#1#10': JSON.stringify(filmsArray),
+          });
+          actions$.next(action);
+        });
+
+        afterEach(() => {
+          window.localStorage = null;
+        });
+
+        it(`it effects to "${filmsActionsTypes.LOADED}" action`, (done) => {
+          combineLatest(
+            actions$,
+            mockEpic(onLoadFilms(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$)),
+          )
+            .pipe(take(1))
+            .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
+              try {
+                expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
+                expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.LOADED);
+                expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            });
+        });
+
+        it('it effects to a action with a "films" array as payload', (done) => {
+          combineLatest(
+            mockEpic(onLoadFilms(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$)),
+          )
+            .pipe(take(1))
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
+              try {
+                expect(onLoadFilmsEffect.films).toBeTruthy();
+                expect(onLoadFilmsEffect.films.length).toBeTruthy();
+                expect(onLoadFilmsEffect.films[0].name).toBe(filmsArray[0].name);
+                expect(filmsEpicsEffect.films).toBeTruthy();
+                expect(filmsEpicsEffect.films.length).toBeTruthy();
+                expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);
                 done();
               } catch (e) {
                 done.fail(e);
