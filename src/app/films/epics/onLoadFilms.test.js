@@ -6,6 +6,7 @@ import onLoadFilms from './onLoadFilms';
 import filmsActionsTypes, { loadFilms } from '../actions';
 import filmsEpics from '.';
 import { filmsInitialState } from '../reducer';
+import tasksActionsTypes from 'app/tasks/actions';
 
 const featureInitialState = {
   films: filmsInitialState,
@@ -52,7 +53,7 @@ describe('onLoadFilms epic', () => {
         beforeEach(() => {
           actions$.next(action);
         });
-        it(`it effects to "${filmsActionsTypes.FETCH_PAGE}" action`, (done) => {
+        it(`it effects to "${tasksActionsTypes.SUBMIT}" action`, (done) => {
           combineLatest(
             actions$,
             mockEpic(onLoadFilms(actions$, store$)),
@@ -62,8 +63,8 @@ describe('onLoadFilms epic', () => {
             .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
                 expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
-                expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.FETCH_PAGE);
-                expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(onLoadFilmsEffect.type).toBe(tasksActionsTypes.SUBMIT);
+                expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.SUBMIT);
                 done();
               } catch (e) {
                 done.fail(e);
@@ -71,21 +72,75 @@ describe('onLoadFilms epic', () => {
             });
         });
 
-        it('it effects to a action with same pageable payload of source action', (done) => {
+        it('it effects to a action with "id" prop "fetchFilms#1#10"', (done) => {
           combineLatest(
-            actions$,
             mockEpic(onLoadFilms(actions$, store$)),
             mockEpic(filmsEpics(actions$, store$)),
           )
             .pipe(take(1))
-            .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.pageable).toBeTruthy();
-                expect(onLoadFilmsEffect.pageable.page).toBe(latestAction.pageable.page);
-                expect(onLoadFilmsEffect.pageable.limit).toBe(latestAction.pageable.limit);
-                expect(filmsEpicsEffect.pageable).toBeTruthy();
-                expect(filmsEpicsEffect.pageable.page).toBe(latestAction.pageable.page);
-                expect(filmsEpicsEffect.pageable.limit).toBe(latestAction.pageable.limit);
+                expect(onLoadFilmsEffect.id).toBe('fetchFilms#1#10');
+                expect(filmsEpicsEffect.id).toBe('fetchFilms#1#10');
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            });
+        });
+
+        it('it effects to a action with "name" prop "Fetching 10 films of page 1"', (done) => {
+          combineLatest(
+            mockEpic(onLoadFilms(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$)),
+          )
+            .pipe(take(1))
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
+              try {
+                expect(onLoadFilmsEffect.name).toBe('Fetching 10 films of page 1');
+                expect(filmsEpicsEffect.name).toBe('Fetching 10 films of page 1');
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            });
+        });
+
+        it(`it effects to a action with "effect" prop that is a "${filmsActionsTypes.FETCH_PAGE}" action`, (done) => {
+          combineLatest(
+            mockEpic(onLoadFilms(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$)),
+          )
+            .pipe(take(1))
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
+              try {
+                expect(onLoadFilmsEffect.effect).toBeTruthy();
+                expect(onLoadFilmsEffect.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(filmsEpicsEffect.effect).toBeTruthy();
+                expect(filmsEpicsEffect.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            });
+        });
+
+        it('it effects to a action with "effect" prop with same pageable of source action', (done) => {
+          combineLatest(
+            mockEpic(onLoadFilms(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$)),
+          )
+            .pipe(take(1))
+            .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
+              try {
+                expect(onLoadFilmsEffect.effect).toBeTruthy();
+                expect(onLoadFilmsEffect.effect.pageable).toBeTruthy();
+                expect(onLoadFilmsEffect.effect.pageable.page).toBe(action.pageable.page);
+                expect(onLoadFilmsEffect.effect.pageable.limit).toBe(action.pageable.limit);
+                expect(filmsEpicsEffect.effect).toBeTruthy();
+                expect(filmsEpicsEffect.effect.pageable).toBeTruthy();
+                expect(filmsEpicsEffect.effect.pageable.page).toBe(action.pageable.page);
+                expect(filmsEpicsEffect.effect.pageable.limit).toBe(action.pageable.limit);
                 done();
               } catch (e) {
                 done.fail(e);
