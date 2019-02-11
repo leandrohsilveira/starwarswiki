@@ -105,7 +105,9 @@ describe('onLoadFilms epic', () => {
             });
         });
 
-        it(`it effects to a action with "effect" prop that is a "${filmsActionsTypes.FETCH_PAGE}" action`, (done) => {
+        it(`it effects to a action with "effect" prop that is a "${
+          filmsActionsTypes.FETCH_PAGE
+        }" action`, (done) => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
             mockEpic(filmsEpics(actions$, store$)),
