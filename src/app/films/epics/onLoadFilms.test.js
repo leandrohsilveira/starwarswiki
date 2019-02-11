@@ -1,12 +1,12 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import mockEpic from '__test-utils__/rxjs.utils';
-import mockLocalStorage from 'src/__test-utils__/localStorage.utils';
+import mockLocalStorage from '__test-utils__/localStorage.utils';
+import tasksActionsTypes from 'app/tasks/actions';
 import onLoadFilms from './onLoadFilms';
 import filmsActionsTypes, { loadFilms } from '../actions';
 import filmsEpics from '.';
 import { filmsInitialState } from '../reducer';
-import tasksActionsTypes from 'app/tasks/actions';
 
 const featureInitialState = {
   films: filmsInitialState,
@@ -80,8 +80,8 @@ describe('onLoadFilms epic', () => {
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.id).toBe('fetchFilms#1#10');
-                expect(filmsEpicsEffect.id).toBe('fetchFilms#1#10');
+                expect(onLoadFilmsEffect.task.id).toBe('fetchFilms#1#10');
+                expect(filmsEpicsEffect.task.id).toBe('fetchFilms#1#10');
                 done();
               } catch (e) {
                 done.fail(e);
@@ -97,8 +97,8 @@ describe('onLoadFilms epic', () => {
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.name).toBe('Fetching 10 films of page 1');
-                expect(filmsEpicsEffect.name).toBe('Fetching 10 films of page 1');
+                expect(onLoadFilmsEffect.task.name).toBe('Fetching 10 films of page 1');
+                expect(filmsEpicsEffect.task.name).toBe('Fetching 10 films of page 1');
                 done();
               } catch (e) {
                 done.fail(e);
@@ -114,10 +114,10 @@ describe('onLoadFilms epic', () => {
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.effect).toBeTruthy();
-                expect(onLoadFilmsEffect.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
-                expect(filmsEpicsEffect.effect).toBeTruthy();
-                expect(filmsEpicsEffect.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(onLoadFilmsEffect.task.effect).toBeTruthy();
+                expect(onLoadFilmsEffect.task.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(filmsEpicsEffect.task.effect).toBeTruthy();
+                expect(filmsEpicsEffect.task.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
                 done();
               } catch (e) {
                 done.fail(e);
@@ -133,14 +133,14 @@ describe('onLoadFilms epic', () => {
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.effect).toBeTruthy();
-                expect(onLoadFilmsEffect.effect.pageable).toBeTruthy();
-                expect(onLoadFilmsEffect.effect.pageable.page).toBe(action.pageable.page);
-                expect(onLoadFilmsEffect.effect.pageable.limit).toBe(action.pageable.limit);
-                expect(filmsEpicsEffect.effect).toBeTruthy();
-                expect(filmsEpicsEffect.effect.pageable).toBeTruthy();
-                expect(filmsEpicsEffect.effect.pageable.page).toBe(action.pageable.page);
-                expect(filmsEpicsEffect.effect.pageable.limit).toBe(action.pageable.limit);
+                expect(onLoadFilmsEffect.task.effect).toBeTruthy();
+                expect(onLoadFilmsEffect.task.effect.pageable).toBeTruthy();
+                expect(onLoadFilmsEffect.task.effect.pageable.page).toBe(action.pageable.page);
+                expect(onLoadFilmsEffect.task.effect.pageable.limit).toBe(action.pageable.limit);
+                expect(filmsEpicsEffect.task.effect).toBeTruthy();
+                expect(filmsEpicsEffect.task.effect.pageable).toBeTruthy();
+                expect(filmsEpicsEffect.task.effect.pageable.page).toBe(action.pageable.page);
+                expect(filmsEpicsEffect.task.effect.pageable.limit).toBe(action.pageable.limit);
                 done();
               } catch (e) {
                 done.fail(e);
@@ -204,17 +204,19 @@ describe('onLoadFilms epic', () => {
         });
       });
 
-      describe('and pageable is local storage with "films#1#10" key', () => {
+      describe('and pageable is in local storage with "films#1#10" key', () => {
         const filmsArray = [{ name: 'Film 1' }];
         beforeEach(() => {
-          mockLocalStorage({
-            'films#1#10': JSON.stringify(filmsArray),
-          });
+          jest
+            .fn(window.localStorage.getItem)
+            .mockImplementation((key) => {
+              return key === 'films#1#10' ? JSON.stringify(filmsArray) : null;
+            });
           actions$.next(action);
         });
 
         afterEach(() => {
-          window.localStorage = null;
+          jest.fn(window.localStorage.getItem).mockClear();
         });
 
         it(`it effects to "${filmsActionsTypes.LOADED}" action`, (done) => {
