@@ -1,7 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import mockEpic from '__test-utils__/rxjs.utils';
-import mockLocalStorage from '__test-utils__/localStorage.utils';
 import tasksActionsTypes from 'app/tasks/actions';
 import onLoadFilms from './onLoadFilms';
 import filmsActionsTypes, { loadFilms } from '../actions';
@@ -207,16 +206,12 @@ describe('onLoadFilms epic', () => {
       describe('and pageable is in local storage with "films#1#10" key', () => {
         const filmsArray = [{ name: 'Film 1' }];
         beforeEach(() => {
-          jest
-            .fn(window.localStorage.getItem)
-            .mockImplementation((key) => {
-              return key === 'films#1#10' ? JSON.stringify(filmsArray) : null;
-            });
+          window.localStorage.setItem('films#1#10', JSON.stringify(filmsArray));
           actions$.next(action);
         });
 
         afterEach(() => {
-          jest.fn(window.localStorage.getItem).mockClear();
+          window.localStorage.clear();
         });
 
         it(`it effects to "${filmsActionsTypes.LOADED}" action`, (done) => {
