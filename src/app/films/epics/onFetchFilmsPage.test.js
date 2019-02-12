@@ -1,0 +1,120 @@
+import { BehaviorSubject, combineLatest } from 'rxjs';
+import mockEpic from '__test-utils__/rxjs.utils';
+import { take } from 'rxjs/operators';
+import onFetchFilmsPage from './onFetchFilmsPage';
+import { filmsInitialState } from '../reducer';
+import filmsActionsTypes, { fetchFilmsPage } from '../actions';
+import filmsEpics from '.';
+
+const featureInitialState = {
+  films: filmsInitialState,
+};
+
+describe('onFetchFilmsPage epic', () => {
+  let actions$;
+  let store$;
+
+  beforeEach(() => {
+    actions$ = new BehaviorSubject();
+    store$ = new BehaviorSubject(featureInitialState);
+  });
+
+  afterEach(() => {
+    actions$.complete();
+    store$.complete();
+  });
+
+  describe('when a unknown action is emitted', () => {
+    const action = { type: '======' };
+
+    it('it does not effect', (done) => {
+      actions$.next(action);
+      combineLatest(actions$, mockEpic(onFetchFilmsPage(actions$, store$)))
+        .pipe(take(1))
+        .subscribe(([latestAction, onFetchFilmsPageEffect]) => {
+          try {
+            expect(latestAction).toBeTruthy();
+            expect(latestAction.type).toBe(action.type);
+            expect(onFetchFilmsPageEffect).toBe('not called');
+            done();
+          } catch (e) {
+            done.fail(e);
+          }
+        });
+    });
+  });
+
+  describe(`when an action with type "${filmsActionsTypes.FETCH_PAGE}" is emmited`, () => {
+    const filmsArray = [{ name: 'Film 1' }];
+    const pageable = {
+      page: 1,
+      limit: 10,
+    };
+    const action = fetchFilmsPage(pageable);
+
+    beforeEach(() => {
+      actions$.next(action);
+    });
+
+    it(`it effects to an action with type "${filmsActionsTypes.FETCH_SUCCESS}"`, (done) => {
+      combineLatest(
+        actions$,
+        mockEpic(onFetchFilmsPage(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
+        .pipe(take(1))
+        .subscribe(([latestAction, onFetchFilmsPageEffect, filmsEpicsEffect]) => {
+          try {
+            expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
+            expect(onFetchFilmsPageEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
+            expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
+            done();
+          } catch (e) {
+            done.fail(e);
+          }
+        });
+    });
+
+    it('it effects to an action with films array prop"', (done) => {
+      combineLatest(
+        mockEpic(onFetchFilmsPage(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
+        .pipe(take(1))
+        .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
+          try {
+            expect(onFetchFilmsPageEffect.films).toBeTruthy();
+            expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
+            expect(onFetchFilmsPageEffect.films[0].name).toBe(filmsArray[0].name);
+            expect(filmsEpicsEffect.films).toBeTruthy();
+            expect(filmsEpicsEffect.films.length).toBeTruthy();
+            expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);
+            done();
+          } catch (e) {
+            done.fail(e);
+          }
+        });
+    });
+
+    it('it effects to an action with same pageable prop of the source action"', (done) => {
+      combineLatest(
+        mockEpic(onFetchFilmsPage(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
+        .pipe(take(1))
+        .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
+          try {
+            expect(onFetchFilmsPageEffect.pageable).toBeTruthy();
+            expect(onFetchFilmsPageEffect.pageable.page).toBe(pageable.page);
+            expect(onFetchFilmsPageEffect.pageable.limit).toBe(pageable.limit);
+            expect(filmsEpicsEffect.pageable).toBeTruthy();
+            expect(filmsEpicsEffect.pageable.page).toBe(pageable.page);
+            expect(filmsEpicsEffect.pageable.limit).toBe(pageable.limit);
+            done();
+          } catch (e) {
+            done.fail(e);
+          }
+        });
+    });
+  });
+});
