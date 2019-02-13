@@ -2,7 +2,7 @@ const filmsActionsTypes = {
   LOAD: '[Films] Load films',
   LOADED: '[Films] Films loaded',
   FETCH_PAGE: '[Films] Fetch films page',
-  FETCH_SUCCESS: '[Films] Fetch films page SUCCESS',
+  PAGE_FETCHED: '[Films] Films page fetched',
 };
 
 export const loadFilms = pageable => ({
@@ -21,8 +21,8 @@ export const fetchFilmsPage = pageable => ({
   pageable,
 });
 
-export const fetchFilmsPageSuccess = (films, pageable) => ({
-  type: filmsActionsTypes.FETCH_SUCCESS,
+export const filmsPageFetched = (films, pageable) => ({
+  type: filmsActionsTypes.PAGE_FETCHED,
   films,
   pageable,
 });

@@ -66,7 +66,7 @@ describe('onFetchFilmsPage epic', () => {
       actions$.next(action);
     });
 
-    it(`it effects to an action with type "${filmsActionsTypes.FETCH_SUCCESS}"`, (done) => {
+    it(`it effects to an action with type "${filmsActionsTypes.PAGE_FETCHED}"`, (done) => {
       combineLatest(
         actions$,
         mockEpic(onFetchFilmsPage(actions$, store$)),
@@ -78,8 +78,8 @@ describe('onFetchFilmsPage epic', () => {
             expect(onFetchFilmsPageEffect).not.toBe('not called');
             expect(filmsEpicsEffect).not.toBe('not called');
             expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
-            expect(onFetchFilmsPageEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
-            expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
+            expect(onFetchFilmsPageEffect.type).toBe(filmsActionsTypes.PAGE_FETCHED);
+            expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.PAGE_FETCHED);
             done();
           } catch (e) {
             done.fail(e);
