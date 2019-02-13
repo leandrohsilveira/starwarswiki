@@ -18,6 +18,92 @@ describe('The films service', () => {
       );
     });
 
+    describe('when called without a pageable', () => {
+      let result$;
+
+      beforeAll(() => {
+        global.fetch.mockClear();
+        result$ = filmsService.fetchPage();
+      });
+
+      it('it returns an array of films', (done) => {
+        result$
+          .pipe(
+            notCalledIn(100),
+            take(1),
+          )
+          .subscribe((films) => {
+            try {
+              expect(films).toBe(filmsMockP1L10);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+
+      it('it fetch from "/api/films?page=1&limit=10" URL', (done) => {
+        result$
+          .pipe(
+            notCalledIn(100),
+            take(1),
+          )
+          .subscribe((films) => {
+            try {
+              expect(films).not.toBe('not called');
+              expect(global.fetch).toHaveBeenCalledTimes(1);
+              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=1&limit=10');
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+    });
+
+    describe('when called with an empty object as pageable', () => {
+      let result$;
+
+      beforeAll(() => {
+        global.fetch.mockClear();
+        result$ = filmsService.fetchPage({});
+      });
+
+      it('it returns an array of films', (done) => {
+        result$
+          .pipe(
+            notCalledIn(100),
+            take(1),
+          )
+          .subscribe((films) => {
+            try {
+              expect(films).toBe(filmsMockP1L10);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+
+      it('it fetch from "/api/films?page=1&limit=10" URL', (done) => {
+        result$
+          .pipe(
+            notCalledIn(100),
+            take(1),
+          )
+          .subscribe((films) => {
+            try {
+              expect(films).not.toBe('not called');
+              expect(global.fetch).toHaveBeenCalledTimes(1);
+              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=1&limit=10');
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          });
+      });
+    });
+
     describe('when called with a pageable with page 1 and limit 10', () => {
       const pageable = { page: 1, limit: 10 };
 
