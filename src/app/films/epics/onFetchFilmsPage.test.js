@@ -1,5 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import mockEpic from '__test-utils__/rxjs.utils';
+import mockFetch from '__test-utils__/fetch.utils';
 import { take } from 'rxjs/operators';
 import onFetchFilmsPage from './onFetchFilmsPage';
 import { filmsInitialState } from '../reducer';
@@ -11,8 +12,18 @@ const featureInitialState = {
 };
 
 describe('onFetchFilmsPage epic', () => {
+  const filmsMockP1L10 = [{ name: 'Film 1' }];
+
   let actions$;
   let store$;
+
+  beforeAll(() => {
+    jest.spyOn(global, 'fetch').mockImplementation(
+      mockFetch({
+        '/api/films?page=1&limit=10': filmsMockP1L10,
+      }),
+    );
+  });
 
   beforeEach(() => {
     actions$ = new BehaviorSubject();
@@ -45,7 +56,6 @@ describe('onFetchFilmsPage epic', () => {
   });
 
   describe(`when an action with type "${filmsActionsTypes.FETCH_PAGE}" is emmited`, () => {
-    const filmsArray = [{ name: 'Film 1' }];
     const pageable = {
       page: 1,
       limit: 10,
@@ -65,6 +75,8 @@ describe('onFetchFilmsPage epic', () => {
         .pipe(take(1))
         .subscribe(([latestAction, onFetchFilmsPageEffect, filmsEpicsEffect]) => {
           try {
+            expect(onFetchFilmsPageEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
             expect(onFetchFilmsPageEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
             expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.FETCH_SUCCESS);
@@ -83,12 +95,14 @@ describe('onFetchFilmsPage epic', () => {
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
           try {
+            expect(onFetchFilmsPageEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(onFetchFilmsPageEffect.films).toBeTruthy();
             expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
-            expect(onFetchFilmsPageEffect.films[0].name).toBe(filmsArray[0].name);
+            expect(onFetchFilmsPageEffect.films[0].name).toBe(filmsMockP1L10[0].name);
             expect(filmsEpicsEffect.films).toBeTruthy();
             expect(filmsEpicsEffect.films.length).toBeTruthy();
-            expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);
+            expect(filmsEpicsEffect.films[0].name).toBe(filmsMockP1L10[0].name);
             done();
           } catch (e) {
             done.fail(e);
@@ -104,6 +118,8 @@ describe('onFetchFilmsPage epic', () => {
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
           try {
+            expect(onFetchFilmsPageEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(onFetchFilmsPageEffect.pageable).toBeTruthy();
             expect(onFetchFilmsPageEffect.pageable.page).toBe(pageable.page);
             expect(onFetchFilmsPageEffect.pageable.limit).toBe(pageable.limit);

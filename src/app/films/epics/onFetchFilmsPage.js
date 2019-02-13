@@ -1,11 +1,16 @@
 import { ofType } from 'redux-observable';
-import { mapTo } from 'rxjs/operators';
-import filmsActionsTypes from '../actions';
+import { switchMap, map } from 'rxjs/operators';
+import filmsActionsTypes, { fetchFilmsPageSuccess } from '../actions';
+import filmsService from '../service';
 
-function onFetchFilmsPage(state$) {
-  return state$.pipe(
+function onFetchFilmsPage(actions$) {
+  return actions$.pipe(
     ofType(filmsActionsTypes.FETCH_PAGE),
-    mapTo(null),
+    switchMap(({ pageable }) => {
+      const result$ = filmsService.fetchPage(pageable);
+      return result$.pipe(map(films => [pageable, films]));
+    }),
+    map(([pageable, films]) => fetchFilmsPageSuccess(films, pageable)),
   );
 }
 
