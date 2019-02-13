@@ -5,6 +5,7 @@ import tasksActionsTypes from 'app/tasks/actions';
 import { filmsInitialState } from '../reducer';
 import onFilmsPageFetched from './onFilmsPageFetched';
 import filmsActionsTypes, { filmsPageFetched } from '../actions';
+import filmsEpics from '.';
 
 const featureInitialState = {
   films: filmsInitialState,
@@ -51,15 +52,24 @@ describe('onFilmsPageFetched epic', () => {
       const pageable = { page: 1, limit: 10 };
       const action = filmsPageFetched(films, pageable);
 
-      it('it does not effect', (done) => {
+      it(`it effects to an action with type "${filmsActionsTypes.LOADED}"`, (done) => {
         actions$.next(action);
-        combineLatest(actions$, mockEpic(onFilmsPageFetched(actions$, store$)))
+        combineLatest(
+          actions$,
+          mockEpic(onFilmsPageFetched(actions$, store$)),
+          mockEpic(filmsEpics(actions$, store$)),
+        )
           .pipe(take(1))
-          .subscribe(([latestAction, onFilmsPageFetchedEffect]) => {
+          .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
+              expect(onFilmsPageFetchedEffect).not.toBe('not called');
+              expect(filmsEpicsEffect).not.toBe('not called');
               expect(latestAction).toBeTruthy();
               expect(latestAction.type).toBe(action.type);
-              expect(onFilmsPageFetchedEffect).toBe('not called');
+              expect(onFilmsPageFetchedEffect).toBeTruthy();
+              expect(onFilmsPageFetchedEffect.type).toBe(filmsActionsTypes.LOADED);
+              expect(filmsEpicsEffect).toBeTruthy();
+              expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
               done();
             } catch (e) {
               done.fail(e);
@@ -70,11 +80,15 @@ describe('onFilmsPageFetched epic', () => {
       it('it inserts films array into localStorage with key "films#1#10"', (done) => {
         expect(window.localStorage.getItem('films#1#10')).toBeFalsy();
         actions$.next(action);
-        mockEpic(onFilmsPageFetched(actions$, store$))
+        combineLatest(
+          mockEpic(onFilmsPageFetched(actions$, store$)),
+          mockEpic(filmsEpics(actions$, store$)),
+        )
           .pipe(take(1))
-          .subscribe((onFilmsPageFetchedEffect) => {
+          .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFilmsPageFetchedEffect).toBe('not called');
+              expect(onFilmsPageFetchedEffect).not.toBe('not called');
+              expect(filmsEpicsEffect).not.toBe('not called');
               expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
               const storedFilms = JSON.parse(window.localStorage.getItem('films#1#10'));
               expect(storedFilms).toBeTruthy();
@@ -105,14 +119,22 @@ describe('onFilmsPageFetched epic', () => {
 
     it(`it effects to an action with type "${tasksActionsTypes.COMPLETE}"`, (done) => {
       actions$.next(action);
-      combineLatest(actions$, mockEpic(onFilmsPageFetched(actions$, store$)))
+      combineLatest(
+        actions$,
+        mockEpic(onFilmsPageFetched(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
         .pipe(take(1))
-        .subscribe(([latestAction, onFilmsPageFetchedEffect]) => {
+        .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
           try {
+            expect(onFilmsPageFetchedEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(latestAction).toBeTruthy();
             expect(latestAction.type).toBe(action.type);
             expect(onFilmsPageFetchedEffect).toBeTruthy();
             expect(onFilmsPageFetchedEffect.type).toBe(tasksActionsTypes.COMPLETE);
+            expect(filmsEpicsEffect).toBeTruthy();
+            expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.COMPLETE);
             done();
           } catch (e) {
             done.fail(e);
@@ -122,14 +144,22 @@ describe('onFilmsPageFetched epic', () => {
 
     it('it effects to an action with "task" prop that is the same instance of source action meta task', (done) => {
       actions$.next(action);
-      combineLatest(actions$, mockEpic(onFilmsPageFetched(actions$, store$)))
+      combineLatest(
+        actions$,
+        mockEpic(onFilmsPageFetched(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
         .pipe(take(1))
-        .subscribe(([latestAction, onFilmsPageFetchedEffect]) => {
+        .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
           try {
+            expect(onFilmsPageFetchedEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(latestAction).toBeTruthy();
             expect(latestAction.type).toBe(action.type);
             expect(onFilmsPageFetchedEffect).toBeTruthy();
             expect(onFilmsPageFetchedEffect.task).toBe(action.meta.task);
+            expect(filmsEpicsEffect).toBeTruthy();
+            expect(filmsEpicsEffect.task).toBe(action.meta.task);
             done();
           } catch (e) {
             done.fail(e);
@@ -140,11 +170,15 @@ describe('onFilmsPageFetched epic', () => {
     it('it inserts films array into localStorage with key "films#1#10"', (done) => {
       expect(window.localStorage.getItem('films#1#10')).toBeFalsy();
       actions$.next(action);
-      mockEpic(onFilmsPageFetched(actions$, store$))
+      combineLatest(
+        mockEpic(onFilmsPageFetched(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$)),
+      )
         .pipe(take(1))
-        .subscribe((onFilmsPageFetchedEffect) => {
+        .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
           try {
-            expect(onFilmsPageFetchedEffect).toBe('not called');
+            expect(onFilmsPageFetchedEffect).not.toBe('not called');
+            expect(filmsEpicsEffect).not.toBe('not called');
             expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
             const storedFilms = JSON.parse(window.localStorage.getItem('films#1#10'));
             expect(storedFilms).toBeTruthy();
