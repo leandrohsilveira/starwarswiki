@@ -61,33 +61,24 @@ describe('The films module reducer', () => {
 
   describe(`when a "${filmsActionsTypes.LOADED}" action is provided`, () => {
     const films = [{ name: 'Name' }];
-    const action = filmsLoaded(films);
+    describe('with a pageable prop', () => {
+      const pageable = { page: 2, limit: 30 };
+      const action = filmsLoaded(films, pageable);
 
-    describe('with initial state', () => {
-      it('it reduces to a state with "films" array not empty', () => {
+      it('it reduces to a state with a films pages map entry of "2#30" with the films of action', () => {
         const result = filmsReducer(filmsInitialState, action);
-        expect(result.films).toEqual(films);
-      });
-
-      it('it reduces to a state with "loading" false', () => {
-        const result = filmsReducer(filmsInitialState, action);
-        expect(result.loading).toBeFalsy();
+        const page = result.films['2#30'];
+        expect(page).toBe(films);
       });
     });
 
-    describe('with a truthy "loading" state', () => {
-      it('it reduces to a state with "films" array not empty', () => {
-        const result = filmsReducer(filmsInitialState, action);
-        expect(result.films).toEqual(films);
-      });
+    describe('without a pageable prop', () => {
+      const action = filmsLoaded(films);
 
-      it('it reduces to a state with "loading" true', () => {
-        const state = {
-          ...filmsInitialState,
-          loading: true,
-        };
-        const result = filmsReducer(state, action);
-        expect(result.loading).toBeFalsy();
+      it('it reduces to a state with a films pages map entry of "0#10" with the films of action', () => {
+        const result = filmsReducer(filmsInitialState, action);
+        const page = result.films['0#10'];
+        expect(page).toBe(films);
       });
     });
   });
