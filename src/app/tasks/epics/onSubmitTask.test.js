@@ -19,11 +19,11 @@ describe('onSubmitTask epic', () => {
     const task = {
       id: 'fetchUser',
       name: 'Fetching user data',
-      effect: { type: 'effect action' },
+      effect: { type: 'effect action' }
     };
     const action = submitTask(task);
 
-    it('it effects to the action of the "effect" prop of the task', (done) => {
+    it('it effects to the action of the "effect" prop of the task', done => {
       actions$.next(action);
       combineLatest(actions$, onSubmitTask(actions$), tasksEpics(actions$))
         .pipe(take(1))
@@ -39,7 +39,7 @@ describe('onSubmitTask epic', () => {
         });
     });
 
-    it('it effects to a action with a reference to the task ("meta.task" prop)', (done) => {
+    it('it effects to a action with a reference to the task ("meta.task" prop)', done => {
       actions$.next(action);
       combineLatest(actions$, onSubmitTask(actions$), tasksEpics(actions$))
         .pipe(take(1))

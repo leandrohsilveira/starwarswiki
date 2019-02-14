@@ -1,4 +1,7 @@
-import layoutReducer, { layoutInitialState, layoutSelector } from 'app/layout/reducer';
+import layoutReducer, {
+  layoutInitialState,
+  layoutSelector
+} from 'app/layout/reducer';
 import layoutActionsTypes, { changeTitle } from './actions';
 
 describe('The layout module reducer', () => {
@@ -12,7 +15,9 @@ describe('The layout module reducer', () => {
     });
   });
 
-  describe(`when the "${layoutActionsTypes.CHANGE_TITLE}" action was dispatched`, () => {
+  describe(`when the "${
+    layoutActionsTypes.CHANGE_TITLE
+  }" action was dispatched`, () => {
     describe('with "" as title payload', () => {
       let result;
 

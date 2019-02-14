@@ -4,7 +4,7 @@ import { timeout, catchError } from 'rxjs/operators';
 export function notCalledIn(timout) {
   return pipe(
     timeout(timout),
-    catchError(() => of('not called')),
+    catchError(() => of('not called'))
   );
 }
 

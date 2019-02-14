@@ -23,38 +23,40 @@ function onLoadFilms(actions$, state$) {
 
   const [memory$, elseLocalStorage$] = ofType$.pipe(
     selectLatestFrom(state$, filmsSelector),
-    partition(([{ pageable }, state]) => !!state.films[getFilmsId(pageable)]),
+    partition(([{ pageable }, state]) => !!state.films[getFilmsId(pageable)])
   );
 
   const [localStorage$, fetch$] = elseLocalStorage$.pipe(
     partition(
-      ([{ pageable }]) => !!window.localStorage.getItem(getFilmsId(pageable)),
-    ),
+      ([{ pageable }]) => !!window.localStorage.getItem(getFilmsId(pageable))
+    )
   );
 
   return merge(
     memory$.pipe(
       map(([{ pageable }, state]) => [
         pageable,
-        state.films[getFilmsId(pageable)],
+        state.films[getFilmsId(pageable)]
       ]),
-      map(([pageable, films]) => filmsLoaded(films, pageable)),
+      map(([pageable, films]) => filmsLoaded(films, pageable))
     ),
     localStorage$.pipe(
       map(([{ pageable }]) => [
         pageable,
-        window.localStorage.getItem(getFilmsId(pageable)),
+        window.localStorage.getItem(getFilmsId(pageable))
       ]),
       map(([pageable, films]) => [pageable, JSON.parse(films)]),
-      map(([pageable, films]) => filmsLoaded(films, pageable)),
+      map(([pageable, films]) => filmsLoaded(films, pageable))
     ),
     fetch$.pipe(
-      map(([{ pageable }]) => submitTask({
-        id: `fetchFilms#${pageable.page}#${pageable.limit}`,
-        name: `Fetching ${pageable.limit} films of page ${pageable.page}`,
-        effect: fetchFilmsPage(pageable),
-      })),
-    ),
+      map(([{ pageable }]) =>
+        submitTask({
+          id: `fetchFilms#${pageable.page}#${pageable.limit}`,
+          name: `Fetching ${pageable.limit} films of page ${pageable.page}`,
+          effect: fetchFilmsPage(pageable)
+        })
+      )
+    )
   );
 }
 

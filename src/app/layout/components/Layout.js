@@ -15,12 +15,12 @@ function Layout({ title, children }) {
 
 Layout.propTypes = {
   title: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 Layout.defaultProps = {
   title: '',
-  children: null,
+  children: null
 };
 
 export default Layout;

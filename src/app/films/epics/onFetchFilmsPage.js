@@ -10,7 +10,7 @@ function onFetchFilmsPage(actions$) {
       const result$ = filmsService.fetchPage(pageable);
       return result$.pipe(map(films => [pageable, films]));
     }),
-    map(([pageable, films]) => filmsPageFetched(films, pageable)),
+    map(([pageable, films]) => filmsPageFetched(films, pageable))
   );
 }
 

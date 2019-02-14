@@ -9,14 +9,14 @@ function onCompleteActions$(actions$) {
 function handleEffect(actions$) {
   return onCompleteActions$(actions$).pipe(
     filter(({ effect }) => !!effect),
-    map(({ effect }) => effect),
+    map(({ effect }) => effect)
   );
 }
 
 function handleClear(actions$) {
   return onCompleteActions$(actions$).pipe(
     filter(({ successful, contextChanged }) => successful && !contextChanged),
-    map(({ task }) => clearTask(task)),
+    map(({ task }) => clearTask(task))
   );
 }
 

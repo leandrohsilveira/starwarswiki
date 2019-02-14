@@ -4,32 +4,32 @@ const filmsActionsTypes = {
   LOAD: '[Films] Load films',
   LOADED: '[Films] Films loaded',
   FETCH_PAGE: '[Films] Fetch films page',
-  PAGE_FETCHED: '[Films] Films page fetched',
+  PAGE_FETCHED: '[Films] Films page fetched'
 };
 
 export const loadFilms = (pageable = filmsInitialState.pageable) => ({
   type: filmsActionsTypes.LOAD,
-  pageable,
+  pageable
 });
 
 export const filmsLoaded = (films, pageable = filmsInitialState.pageable) => ({
   type: filmsActionsTypes.LOADED,
   films,
-  pageable,
+  pageable
 });
 
 export const fetchFilmsPage = (pageable = filmsInitialState.pageable) => ({
   type: filmsActionsTypes.FETCH_PAGE,
-  pageable,
+  pageable
 });
 
 export const filmsPageFetched = (
   films,
-  pageable = filmsInitialState.pageable,
+  pageable = filmsInitialState.pageable
 ) => ({
   type: filmsActionsTypes.PAGE_FETCHED,
   films,
-  pageable,
+  pageable
 });
 
 export default filmsActionsTypes;

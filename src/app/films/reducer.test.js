@@ -1,10 +1,13 @@
 import filmsReducer, { filmsInitialState, filmsSelector } from './reducer';
 import filmsActionsTypes, {
-  fetchFilmsPage, filmsLoaded, filmsPageFetched, loadFilms,
+  fetchFilmsPage,
+  filmsLoaded,
+  filmsPageFetched,
+  loadFilms
 } from './actions';
 
 const featureInitialState = {
-  films: filmsInitialState,
+  films: filmsInitialState
 };
 
 describe('The films module reducer', () => {
@@ -24,8 +27,8 @@ describe('The films module reducer', () => {
         ...filmsInitialState,
         pageable: {
           page: 1,
-          limit: 40,
-        },
+          limit: 40
+        }
       };
       const action = loadFilms();
       it('it reduces to a state with the pageable of the action', () => {
@@ -44,7 +47,7 @@ describe('The films module reducer', () => {
       const state = filmsInitialState;
       const pageable = {
         page: 1,
-        limit: 20,
+        limit: 20
       };
       const action = loadFilms(pageable);
       it('it reduces to a state with the pageable of the action', () => {
@@ -100,7 +103,7 @@ describe('The films module reducer', () => {
     describe('with a pageable prop', () => {
       const pageable = {
         page: 1,
-        limit: 30,
+        limit: 30
       };
       const action = fetchFilmsPage(pageable);
 
@@ -113,7 +116,6 @@ describe('The films module reducer', () => {
       });
     });
   });
-
 
   describe(`when an action with type "${
     filmsActionsTypes.PAGE_FETCHED

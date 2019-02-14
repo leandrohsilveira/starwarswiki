@@ -8,7 +8,7 @@ import filmsEpics from '.';
 import { filmsInitialState } from '../reducer';
 
 const featureInitialState = {
-  films: filmsInitialState,
+  films: filmsInitialState
 };
 
 describe('onLoadFilms epic', () => {
@@ -28,7 +28,7 @@ describe('onLoadFilms epic', () => {
   describe('when a unknown action is emitted', () => {
     const action = { type: '======' };
 
-    it('it does not effect', (done) => {
+    it('it does not effect', done => {
       actions$.next(action);
       combineLatest(actions$, mockEpic(onLoadFilms(actions$, store$)))
         .pipe(take(1))
@@ -52,11 +52,11 @@ describe('onLoadFilms epic', () => {
         beforeEach(() => {
           actions$.next(action);
         });
-        it(`it effects to "${tasksActionsTypes.SUBMIT}" action`, (done) => {
+        it(`it effects to "${tasksActionsTypes.SUBMIT}" action`, done => {
           combineLatest(
             actions$,
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(
@@ -69,14 +69,14 @@ describe('onLoadFilms epic', () => {
                 } catch (e) {
                   done.fail(e);
                 }
-              },
+              }
             );
         });
 
-        it('it effects to a action with "id" prop "fetchFilms#1#10"', (done) => {
+        it('it effects to a action with "id" prop "fetchFilms#1#10"', done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
@@ -90,19 +90,19 @@ describe('onLoadFilms epic', () => {
             });
         });
 
-        it('it effects to a action with "name" prop "Fetching 10 films of page 1"', (done) => {
+        it('it effects to a action with "name" prop "Fetching 10 films of page 1"', done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
                 expect(onLoadFilmsEffect.task.name).toBe(
-                  'Fetching 10 films of page 1',
+                  'Fetching 10 films of page 1'
                 );
                 expect(filmsEpicsEffect.task.name).toBe(
-                  'Fetching 10 films of page 1',
+                  'Fetching 10 films of page 1'
                 );
                 done();
               } catch (e) {
@@ -113,21 +113,21 @@ describe('onLoadFilms epic', () => {
 
         it(`it effects to a action with "effect" prop that is a "${
           filmsActionsTypes.FETCH_PAGE
-        }" action`, (done) => {
+        }" action`, done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
                 expect(onLoadFilmsEffect.task.effect).toBeTruthy();
                 expect(onLoadFilmsEffect.task.effect.type).toBe(
-                  filmsActionsTypes.FETCH_PAGE,
+                  filmsActionsTypes.FETCH_PAGE
                 );
                 expect(filmsEpicsEffect.task.effect).toBeTruthy();
                 expect(filmsEpicsEffect.task.effect.type).toBe(
-                  filmsActionsTypes.FETCH_PAGE,
+                  filmsActionsTypes.FETCH_PAGE
                 );
                 done();
               } catch (e) {
@@ -136,10 +136,10 @@ describe('onLoadFilms epic', () => {
             });
         });
 
-        it('it effects to a action with "effect" prop with same pageable of source action', (done) => {
+        it('it effects to a action with "effect" prop with same pageable of source action', done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
@@ -147,18 +147,18 @@ describe('onLoadFilms epic', () => {
                 expect(onLoadFilmsEffect.task.effect).toBeTruthy();
                 expect(onLoadFilmsEffect.task.effect.pageable).toBeTruthy();
                 expect(onLoadFilmsEffect.task.effect.pageable.page).toBe(
-                  action.pageable.page,
+                  action.pageable.page
                 );
                 expect(onLoadFilmsEffect.task.effect.pageable.limit).toBe(
-                  action.pageable.limit,
+                  action.pageable.limit
                 );
                 expect(filmsEpicsEffect.task.effect).toBeTruthy();
                 expect(filmsEpicsEffect.task.effect.pageable).toBeTruthy();
                 expect(filmsEpicsEffect.task.effect.pageable.page).toBe(
-                  action.pageable.page,
+                  action.pageable.page
                 );
                 expect(filmsEpicsEffect.task.effect.pageable.limit).toBe(
-                  action.pageable.limit,
+                  action.pageable.limit
                 );
                 done();
               } catch (e) {
@@ -175,18 +175,18 @@ describe('onLoadFilms epic', () => {
             films: {
               ...featureInitialState.films,
               films: {
-                'films#1#10': filmsArray,
-              },
-            },
+                'films#1#10': filmsArray
+              }
+            }
           });
           actions$.next(action);
         });
 
-        it(`it effects to "${filmsActionsTypes.LOADED}" action`, (done) => {
+        it(`it effects to "${filmsActionsTypes.LOADED}" action`, done => {
           combineLatest(
             actions$,
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(
@@ -199,14 +199,14 @@ describe('onLoadFilms epic', () => {
                 } catch (e) {
                   done.fail(e);
                 }
-              },
+              }
             );
         });
 
-        it('it effects to a action with a "films" array as payload', (done) => {
+        it('it effects to a action with a "films" array as payload', done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
@@ -214,7 +214,7 @@ describe('onLoadFilms epic', () => {
                 expect(onLoadFilmsEffect.films).toBeTruthy();
                 expect(onLoadFilmsEffect.films.length).toBeTruthy();
                 expect(onLoadFilmsEffect.films[0].name).toBe(
-                  filmsArray[0].name,
+                  filmsArray[0].name
                 );
                 expect(filmsEpicsEffect.films).toBeTruthy();
                 expect(filmsEpicsEffect.films.length).toBeTruthy();
@@ -238,11 +238,11 @@ describe('onLoadFilms epic', () => {
           window.localStorage.clear();
         });
 
-        it(`it effects to "${filmsActionsTypes.LOADED}" action`, (done) => {
+        it(`it effects to "${filmsActionsTypes.LOADED}" action`, done => {
           combineLatest(
             actions$,
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(
@@ -255,14 +255,14 @@ describe('onLoadFilms epic', () => {
                 } catch (e) {
                   done.fail(e);
                 }
-              },
+              }
             );
         });
 
-        it('it effects to a action with a "films" array as payload', (done) => {
+        it('it effects to a action with a "films" array as payload', done => {
           combineLatest(
             mockEpic(onLoadFilms(actions$, store$)),
-            mockEpic(filmsEpics(actions$, store$)),
+            mockEpic(filmsEpics(actions$, store$))
           )
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
@@ -270,7 +270,7 @@ describe('onLoadFilms epic', () => {
                 expect(onLoadFilmsEffect.films).toBeTruthy();
                 expect(onLoadFilmsEffect.films.length).toBeTruthy();
                 expect(onLoadFilmsEffect.films[0].name).toBe(
-                  filmsArray[0].name,
+                  filmsArray[0].name
                 );
                 expect(filmsEpicsEffect.films).toBeTruthy();
                 expect(filmsEpicsEffect.films.length).toBeTruthy();

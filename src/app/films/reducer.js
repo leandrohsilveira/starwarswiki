@@ -4,8 +4,8 @@ export const filmsInitialState = {
   films: {},
   pageable: {
     page: 0,
-    limit: 10,
-  },
+    limit: 10
+  }
 };
 
 function getPageKey({ page, limit }) {
@@ -21,16 +21,16 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
         ...state,
         films: {
           ...state.films,
-          [getPageKey(payload.pageable)]: false,
-        },
+          [getPageKey(payload.pageable)]: false
+        }
       };
     case filmsActionsTypes.LOADED:
       return {
         ...state,
         films: {
           ...state.films,
-          [getPageKey(payload.pageable)]: payload.films,
-        },
+          [getPageKey(payload.pageable)]: payload.films
+        }
       };
     case filmsActionsTypes.PAGE_FETCHED:
     default:

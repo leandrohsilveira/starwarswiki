@@ -8,7 +8,7 @@ import filmsActionsTypes, { filmsPageFetched } from '../actions';
 import filmsEpics from '.';
 
 const featureInitialState = {
-  films: filmsInitialState,
+  films: filmsInitialState
 };
 
 describe('onFilmsPageFetched epic', () => {
@@ -29,7 +29,7 @@ describe('onFilmsPageFetched epic', () => {
   describe('when a unknown action is emitted', () => {
     const action = { type: '======' };
 
-    it('it does not effect', (done) => {
+    it('it does not effect', done => {
       actions$.next(action);
       combineLatest(actions$, mockEpic(onFilmsPageFetched(actions$, store$)))
         .pipe(take(1))
@@ -56,12 +56,12 @@ describe('onFilmsPageFetched epic', () => {
 
       it(`it effects to an action with type "${
         filmsActionsTypes.LOADED
-      }"`, (done) => {
+      }"`, done => {
         actions$.next(action);
         combineLatest(
           actions$,
           mockEpic(onFilmsPageFetched(actions$, store$)),
-          mockEpic(filmsEpics(actions$, store$)),
+          mockEpic(filmsEpics(actions$, store$))
         )
           .pipe(take(1))
           .subscribe(
@@ -73,7 +73,7 @@ describe('onFilmsPageFetched epic', () => {
                 expect(latestAction.type).toBe(action.type);
                 expect(onFilmsPageFetchedEffect).toBeTruthy();
                 expect(onFilmsPageFetchedEffect.type).toBe(
-                  filmsActionsTypes.LOADED,
+                  filmsActionsTypes.LOADED
                 );
                 expect(filmsEpicsEffect).toBeTruthy();
                 expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
@@ -81,16 +81,16 @@ describe('onFilmsPageFetched epic', () => {
               } catch (e) {
                 done.fail(e);
               }
-            },
+            }
           );
       });
 
-      it('it inserts films array into localStorage with key "films#1#10"', (done) => {
+      it('it inserts films array into localStorage with key "films#1#10"', done => {
         expect(window.localStorage.getItem('films#1#10')).toBeFalsy();
         actions$.next(action);
         combineLatest(
           mockEpic(onFilmsPageFetched(actions$, store$)),
-          mockEpic(filmsEpics(actions$, store$)),
+          mockEpic(filmsEpics(actions$, store$))
         )
           .pipe(take(1))
           .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
@@ -99,7 +99,7 @@ describe('onFilmsPageFetched epic', () => {
               expect(filmsEpicsEffect).not.toBe('not called');
               expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
               const storedFilms = JSON.parse(
-                window.localStorage.getItem('films#1#10'),
+                window.localStorage.getItem('films#1#10')
               );
               expect(storedFilms).toBeTruthy();
               expect(storedFilms.length).toBeTruthy();
@@ -122,19 +122,19 @@ describe('onFilmsPageFetched epic', () => {
         task: {
           id: 'fetchFilms#1#10',
           name: 'Fetching 10 films of page 1',
-          running: true,
-        },
-      },
+          running: true
+        }
+      }
     };
 
     it(`it effects to an action with type "${
       tasksActionsTypes.COMPLETE
-    }"`, (done) => {
+    }"`, done => {
       actions$.next(action);
       combineLatest(
         actions$,
         mockEpic(onFilmsPageFetched(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(
@@ -146,7 +146,7 @@ describe('onFilmsPageFetched epic', () => {
               expect(latestAction.type).toBe(action.type);
               expect(onFilmsPageFetchedEffect).toBeTruthy();
               expect(onFilmsPageFetchedEffect.type).toBe(
-                tasksActionsTypes.COMPLETE,
+                tasksActionsTypes.COMPLETE
               );
               expect(filmsEpicsEffect).toBeTruthy();
               expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.COMPLETE);
@@ -154,16 +154,16 @@ describe('onFilmsPageFetched epic', () => {
             } catch (e) {
               done.fail(e);
             }
-          },
+          }
         );
     });
 
-    it('it effects to an action with "task" prop that is the same instance of source action meta task', (done) => {
+    it('it effects to an action with "task" prop that is the same instance of source action meta task', done => {
       actions$.next(action);
       combineLatest(
         actions$,
         mockEpic(onFilmsPageFetched(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(
@@ -181,16 +181,16 @@ describe('onFilmsPageFetched epic', () => {
             } catch (e) {
               done.fail(e);
             }
-          },
+          }
         );
     });
 
-    it('it inserts films array into localStorage with key "films#1#10"', (done) => {
+    it('it inserts films array into localStorage with key "films#1#10"', done => {
       expect(window.localStorage.getItem('films#1#10')).toBeFalsy();
       actions$.next(action);
       combineLatest(
         mockEpic(onFilmsPageFetched(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
@@ -199,7 +199,7 @@ describe('onFilmsPageFetched epic', () => {
             expect(filmsEpicsEffect).not.toBe('not called');
             expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
             const storedFilms = JSON.parse(
-              window.localStorage.getItem('films#1#10'),
+              window.localStorage.getItem('films#1#10')
             );
             expect(storedFilms).toBeTruthy();
             expect(storedFilms.length).toBeTruthy();

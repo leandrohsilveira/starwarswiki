@@ -9,9 +9,9 @@ function onSubmitTask(actions$) {
     map(({ task }) => ({
       ...task.effect,
       meta: {
-        task,
-      },
-    })),
+        task
+      }
+    }))
   );
 }
 

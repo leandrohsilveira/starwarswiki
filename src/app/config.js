@@ -10,8 +10,8 @@ const epicMiddleware = createEpicMiddleware();
 
 let composeEnhancers = compose;
 if (
-  process.env.NODE_ENV !== 'production'
-  && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  process.env.NODE_ENV !== 'production' &&
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
 ) {
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 }
@@ -19,7 +19,7 @@ if (
 export const store = createStore(
   reducers,
   initialState,
-  composeEnhancers(applyMiddleware(epicMiddleware)),
+  composeEnhancers(applyMiddleware(epicMiddleware))
 );
 
 epicMiddleware.run(epics);

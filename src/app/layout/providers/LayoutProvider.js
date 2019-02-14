@@ -10,11 +10,11 @@ function LayoutProvider({ children }) {
 }
 
 LayoutProvider.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 LayoutProvider.defaultProps = {
-  children: null,
+  children: null
 };
 
 export default LayoutProvider;

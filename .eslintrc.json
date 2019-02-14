@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "extends": ["airbnb", "prettier", "prettier/react"],
   "env": {
     "browser": true,
     "jest": true
@@ -13,7 +13,8 @@
       {
         "extensions": [".js", ".jsx"]
       }
-    ]
+    ],
+    "implicit-arrow-linebreak": "off"
   },
   "settings": {
     "import/resolver": {

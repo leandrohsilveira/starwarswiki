@@ -13,8 +13,8 @@ describe('The films service', () => {
         mockFetch({
           '/api/films?page=1&limit=10': filmsMockP1L10,
           '/api/films?page=2&limit=10': filmsMockP2L10,
-          '/api/films?page=2&limit=50': filmsMockP2L50,
-        }),
+          '/api/films?page=2&limit=50': filmsMockP2L50
+        })
       );
     });
 
@@ -26,13 +26,13 @@ describe('The films service', () => {
         result$ = filmsService.fetchPage();
       });
 
-      it('it returns an array of films', (done) => {
+      it('it returns an array of films', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).toBe(filmsMockP1L10);
               done();
@@ -42,17 +42,19 @@ describe('The films service', () => {
           });
       });
 
-      it('it fetch from "/api/films?page=1&limit=10" URL', (done) => {
+      it('it fetch from "/api/films?page=1&limit=10" URL', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).not.toBe('not called');
               expect(global.fetch).toHaveBeenCalledTimes(1);
-              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=1&limit=10');
+              expect(global.fetch).toHaveBeenCalledWith(
+                '/api/films?page=1&limit=10'
+              );
               done();
             } catch (e) {
               done.fail(e);
@@ -69,13 +71,13 @@ describe('The films service', () => {
         result$ = filmsService.fetchPage({});
       });
 
-      it('it returns an array of films', (done) => {
+      it('it returns an array of films', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).toBe(filmsMockP1L10);
               done();
@@ -85,17 +87,19 @@ describe('The films service', () => {
           });
       });
 
-      it('it fetch from "/api/films?page=1&limit=10" URL', (done) => {
+      it('it fetch from "/api/films?page=1&limit=10" URL', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).not.toBe('not called');
               expect(global.fetch).toHaveBeenCalledTimes(1);
-              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=1&limit=10');
+              expect(global.fetch).toHaveBeenCalledWith(
+                '/api/films?page=1&limit=10'
+              );
               done();
             } catch (e) {
               done.fail(e);
@@ -114,13 +118,13 @@ describe('The films service', () => {
         result$ = filmsService.fetchPage(pageable);
       });
 
-      it('it returns an array of films', (done) => {
+      it('it returns an array of films', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).toBe(filmsMockP1L10);
               done();
@@ -130,17 +134,19 @@ describe('The films service', () => {
           });
       });
 
-      it('it fetch from "/api/films?page=1&limit=10" URL', (done) => {
+      it('it fetch from "/api/films?page=1&limit=10" URL', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).not.toBe('not called');
               expect(global.fetch).toHaveBeenCalledTimes(1);
-              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=1&limit=10');
+              expect(global.fetch).toHaveBeenCalledWith(
+                '/api/films?page=1&limit=10'
+              );
               done();
             } catch (e) {
               done.fail(e);
@@ -159,13 +165,13 @@ describe('The films service', () => {
         result$ = filmsService.fetchPage(pageable);
       });
 
-      it('it returns an array of films', (done) => {
+      it('it returns an array of films', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).toBe(filmsMockP2L10);
               done();
@@ -175,17 +181,19 @@ describe('The films service', () => {
           });
       });
 
-      it('it fetch from "/api/films?page=2&limit=10" URL', (done) => {
+      it('it fetch from "/api/films?page=2&limit=10" URL', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).not.toBe('not called');
               expect(global.fetch).toHaveBeenCalledTimes(1);
-              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=2&limit=10');
+              expect(global.fetch).toHaveBeenCalledWith(
+                '/api/films?page=2&limit=10'
+              );
               done();
             } catch (e) {
               done.fail(e);
@@ -204,13 +212,13 @@ describe('The films service', () => {
         result$ = filmsService.fetchPage(pageable);
       });
 
-      it('it returns an array of films', (done) => {
+      it('it returns an array of films', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).toBe(filmsMockP2L50);
               done();
@@ -220,17 +228,19 @@ describe('The films service', () => {
           });
       });
 
-      it('it fetch from "/api/films?page=2&limit=50" URL', (done) => {
+      it('it fetch from "/api/films?page=2&limit=50" URL', done => {
         result$
           .pipe(
             notCalledIn(100),
-            take(1),
+            take(1)
           )
-          .subscribe((films) => {
+          .subscribe(films => {
             try {
               expect(films).not.toBe('not called');
               expect(global.fetch).toHaveBeenCalledTimes(1);
-              expect(global.fetch).toHaveBeenCalledWith('/api/films?page=2&limit=50');
+              expect(global.fetch).toHaveBeenCalledWith(
+                '/api/films?page=2&limit=50'
+              );
               done();
             } catch (e) {
               done.fail(e);

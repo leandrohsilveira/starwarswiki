@@ -6,7 +6,7 @@ import onFilmsPageFetched from './onFilmsPageFetched';
 const filmsEpics = combineEpics(
   onLoadFilms,
   onFetchFilmsPage,
-  onFilmsPageFetched,
+  onFilmsPageFetched
 );
 
 export default filmsEpics;

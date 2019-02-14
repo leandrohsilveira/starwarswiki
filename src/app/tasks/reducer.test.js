@@ -1,8 +1,8 @@
-import tasksReducer, { tasksInitialState, tasksSelector } from './reducer';
-import tasksActionsTypes, { submitTask, completeTask, clearTask } from './actions';
+import tasksReducer, {tasksInitialState, tasksSelector} from './reducer';
+import tasksActionsTypes, {clearTask, completeTask, submitTask} from './actions';
 
 const featureInitialState = {
-  tasks: tasksInitialState,
+  tasks: tasksInitialState
 };
 
 describe('The tasks module reducer', () => {
@@ -22,7 +22,7 @@ describe('The tasks module reducer', () => {
     const action = submitTask({
       id: 'fetchUser',
       name: 'Fetching user data',
-      effect: effectAction,
+      effect: effectAction
     });
 
     it('it reduces to a different state', () => {
@@ -32,33 +32,31 @@ describe('The tasks module reducer', () => {
       expect(result).not.toBe(state);
     });
 
-    it(`it reduces to a state with a task with an effect of "${effectAction.type}" action`, () => {
-      const state = tasksInitialState;
-      const result = tasksReducer(state, action);
+    it(`it reduces to a state with a task with an effect of "${
+      effectAction.type
+    }" action`, () => {
+      const result = tasksReducer(tasksInitialState, action);
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
       expect(result.tasks[0].effect).toEqual(effectAction);
     });
 
     it('it reduces to a state with a task with "fetchUser" ID', () => {
-      const state = tasksInitialState;
-      const result = tasksReducer(state, action);
+      const result = tasksReducer(tasksInitialState, action);
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
       expect(result.tasks[0].id).toEqual('fetchUser');
     });
 
     it('it reduces to a state with a task with "Fetching user data" name', () => {
-      const state = tasksInitialState;
-      const result = tasksReducer(state, action);
+      const result = tasksReducer(tasksInitialState, action);
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
       expect(result.tasks[0].name).toEqual('Fetching user data');
     });
 
     it('it reduces to a state with a running task', () => {
-      const state = tasksInitialState;
-      const result = tasksReducer(state, action);
+      const result = tasksReducer(tasksInitialState, action);
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
       expect(result.tasks[0].running).toBeTruthy();
@@ -70,11 +68,11 @@ describe('The tasks module reducer', () => {
       id: 'fetchUser',
       name: 'Fetching user data',
       effect: { type: 'Effect action' },
-      running: true,
+      running: true
     };
     const state = {
       ...tasksInitialState,
-      tasks: [task],
+      tasks: [task]
     };
     const action = completeTask(task);
 
@@ -84,7 +82,9 @@ describe('The tasks module reducer', () => {
       expect(result).not.toBe(state);
     });
 
-    it(`it reduces to a state with a task with an effect of "${task.effect.type}" action`, () => {
+    it(`it reduces to a state with a task with an effect of "${
+      task.effect.type
+    }" action`, () => {
       const result = tasksReducer(state, action);
       expect(result).toBeTruthy();
       expect(result.tasks[0]).toBeTruthy();
@@ -119,11 +119,11 @@ describe('The tasks module reducer', () => {
         id: 'fetchUser',
         name: 'Fetching user data',
         effect: { type: 'Effect action' },
-        running: false,
+        running: false
       };
       const state = {
         ...tasksInitialState,
-        tasks: [task],
+        tasks: [task]
       };
       const action = clearTask(task);
 
@@ -145,11 +145,11 @@ describe('The tasks module reducer', () => {
         id: 'fetchUser',
         name: 'Fetching user data',
         effect: { type: 'Effect action' },
-        running: true,
+        running: true
       };
       const state = {
         ...tasksInitialState,
-        tasks: [task],
+        tasks: [task]
       };
       const action = clearTask(task);
 
@@ -159,7 +159,9 @@ describe('The tasks module reducer', () => {
         expect(result).not.toBe(state);
       });
 
-      it(`it reduces to a state with a task with an effect of "${task.effect.type}" action`, () => {
+      it(`it reduces to a state with a task with an effect of "${
+        task.effect.type
+      }" action`, () => {
         const result = tasksReducer(state, action);
         expect(result).toBeTruthy();
         expect(result.tasks[0]).toBeTruthy();

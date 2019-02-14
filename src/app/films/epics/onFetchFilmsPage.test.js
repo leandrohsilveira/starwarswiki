@@ -8,7 +8,7 @@ import filmsActionsTypes, { fetchFilmsPage } from '../actions';
 import filmsEpics from '.';
 
 const featureInitialState = {
-  films: filmsInitialState,
+  films: filmsInitialState
 };
 
 describe('onFetchFilmsPage epic', () => {
@@ -20,8 +20,8 @@ describe('onFetchFilmsPage epic', () => {
   beforeAll(() => {
     jest.spyOn(global, 'fetch').mockImplementation(
       mockFetch({
-        '/api/films?page=1&limit=10': filmsMockP1L10,
-      }),
+        '/api/films?page=1&limit=10': filmsMockP1L10
+      })
     );
   });
 
@@ -38,7 +38,7 @@ describe('onFetchFilmsPage epic', () => {
   describe('when a unknown action is emitted', () => {
     const action = { type: '======' };
 
-    it('it does not effect', (done) => {
+    it('it does not effect', done => {
       actions$.next(action);
       combineLatest(actions$, mockEpic(onFetchFilmsPage(actions$, store$)))
         .pipe(take(1))
@@ -60,7 +60,7 @@ describe('onFetchFilmsPage epic', () => {
   }" is emmited`, () => {
     const pageable = {
       page: 1,
-      limit: 10,
+      limit: 10
     };
     const action = fetchFilmsPage(pageable);
 
@@ -70,11 +70,11 @@ describe('onFetchFilmsPage epic', () => {
 
     it(`it effects to an action with type "${
       filmsActionsTypes.PAGE_FETCHED
-    }"`, (done) => {
+    }"`, done => {
       combineLatest(
         actions$,
         mockEpic(onFetchFilmsPage(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(
@@ -84,23 +84,23 @@ describe('onFetchFilmsPage epic', () => {
               expect(filmsEpicsEffect).not.toBe('not called');
               expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
               expect(onFetchFilmsPageEffect.type).toBe(
-                filmsActionsTypes.PAGE_FETCHED,
+                filmsActionsTypes.PAGE_FETCHED
               );
               expect(filmsEpicsEffect.type).toBe(
-                filmsActionsTypes.PAGE_FETCHED,
+                filmsActionsTypes.PAGE_FETCHED
               );
               done();
             } catch (e) {
               done.fail(e);
             }
-          },
+          }
         );
     });
 
-    it('it effects to an action with films array prop"', (done) => {
+    it('it effects to an action with films array prop"', done => {
       combineLatest(
         mockEpic(onFetchFilmsPage(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
@@ -110,7 +110,7 @@ describe('onFetchFilmsPage epic', () => {
             expect(onFetchFilmsPageEffect.films).toBeTruthy();
             expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
             expect(onFetchFilmsPageEffect.films[0].name).toBe(
-              filmsMockP1L10[0].name,
+              filmsMockP1L10[0].name
             );
             expect(filmsEpicsEffect.films).toBeTruthy();
             expect(filmsEpicsEffect.films.length).toBeTruthy();
@@ -122,10 +122,10 @@ describe('onFetchFilmsPage epic', () => {
         });
     });
 
-    it('it effects to an action with same pageable prop of the source action"', (done) => {
+    it('it effects to an action with same pageable prop of the source action"', done => {
       combineLatest(
         mockEpic(onFetchFilmsPage(actions$, store$)),
-        mockEpic(filmsEpics(actions$, store$)),
+        mockEpic(filmsEpics(actions$, store$))
       )
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {

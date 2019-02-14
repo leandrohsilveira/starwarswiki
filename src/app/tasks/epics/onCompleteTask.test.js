@@ -10,7 +10,7 @@ describe('onCompleteTask epic', () => {
     id: 'fetchUser',
     name: 'Fetching user data',
     effect: { type: 'effect action' },
-    running: true,
+    running: true
   };
 
   function mockCompletion(successful, contextChanged) {
@@ -22,9 +22,9 @@ describe('onCompleteTask epic', () => {
         user: {
           id: 1,
           username: 'admin',
-          name: 'Administrator',
-        },
-      },
+          name: 'Administrator'
+        }
+      }
     };
   }
 
@@ -39,12 +39,16 @@ describe('onCompleteTask epic', () => {
   });
 
   describe(`when a "${tasksActionsTypes.COMPLETE}" action is provided`, () => {
-    it('it effects to the action with the type of the "effect" prop of the completion', (done) => {
+    it('it effects to the action with the type of the "effect" prop of the completion', done => {
       const completion = mockCompletion(true, true);
       const action = completeTask(task, completion);
       actions$.next(action);
 
-      combineLatest(actions$, mockEpic(onCompleteTask(actions$)), mockEpic(tasksEpics(actions$)))
+      combineLatest(
+        actions$,
+        mockEpic(onCompleteTask(actions$)),
+        mockEpic(tasksEpics(actions$))
+      )
         .pipe(take(1))
         .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
           try {
@@ -62,44 +66,52 @@ describe('onCompleteTask epic', () => {
       const completion = mockCompletion(true, false);
       const action = completeTask(task, completion);
 
-      it(`it effects to an action with "${tasksActionsTypes.CLEAR}" type`, (done) => {
+      it(`it effects to an action with "${
+        tasksActionsTypes.CLEAR
+      }" type`, done => {
         actions$.next(action);
         combineLatest(
           actions$,
           mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
-          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1))
         )
           .pipe(take(1))
-          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
-            try {
-              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-              expect(onCompleteTaskEffect.type).toEqual(tasksActionsTypes.CLEAR);
-              expect(tasksEpicsEffect.type).toEqual(tasksActionsTypes.CLEAR);
-              done();
-            } catch (e) {
-              done.fail(e);
+          .subscribe(
+            ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+              try {
+                expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+                expect(onCompleteTaskEffect.type).toEqual(
+                  tasksActionsTypes.CLEAR
+                );
+                expect(tasksEpicsEffect.type).toEqual(tasksActionsTypes.CLEAR);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
             }
-          });
+          );
       });
 
-      it('it effects to an action with a "task" prop that is the completed task', (done) => {
+      it('it effects to an action with a "task" prop that is the completed task', done => {
         actions$.next(action);
         combineLatest(
           actions$,
           mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
-          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1))
         )
           .pipe(take(1))
-          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
-            try {
-              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-              expect(onCompleteTaskEffect.task).toEqual(action.task);
-              expect(tasksEpicsEffect.task).toEqual(action.task);
-              done();
-            } catch (e) {
-              done.fail(e);
+          .subscribe(
+            ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+              try {
+                expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+                expect(onCompleteTaskEffect.task).toEqual(action.task);
+                expect(tasksEpicsEffect.task).toEqual(action.task);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
             }
-          });
+          );
       });
     });
 
@@ -107,24 +119,26 @@ describe('onCompleteTask epic', () => {
       const completion = mockCompletion(true, true);
       const action = completeTask(task, completion);
 
-      it('it does not effect', (done) => {
+      it('it does not effect', done => {
         actions$.next(action);
         combineLatest(
           actions$,
           mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
-          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1))
         )
           .pipe(take(1))
-          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
-            try {
-              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-              expect(onCompleteTaskEffect).toEqual('not called');
-              expect(tasksEpicsEffect).toEqual('not called');
-              done();
-            } catch (e) {
-              done.fail(e);
+          .subscribe(
+            ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+              try {
+                expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+                expect(onCompleteTaskEffect).toEqual('not called');
+                expect(tasksEpicsEffect).toEqual('not called');
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
             }
-          });
+          );
       });
     });
 
@@ -132,24 +146,26 @@ describe('onCompleteTask epic', () => {
       const completion = mockCompletion(false, false);
       const action = completeTask(task, completion);
 
-      it('it does not effect', (done) => {
+      it('it does not effect', done => {
         actions$.next(action);
         combineLatest(
           actions$,
           mockEpic(onCompleteTask(actions$)).pipe(skip(1)),
-          mockEpic(tasksEpics(actions$)).pipe(skip(1)),
+          mockEpic(tasksEpics(actions$)).pipe(skip(1))
         )
           .pipe(take(1))
-          .subscribe(([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
-            try {
-              expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-              expect(onCompleteTaskEffect).toEqual('not called');
-              expect(tasksEpicsEffect).toEqual('not called');
-              done();
-            } catch (e) {
-              done.fail(e);
+          .subscribe(
+            ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
+              try {
+                expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
+                expect(onCompleteTaskEffect).toEqual('not called');
+                expect(tasksEpicsEffect).toEqual('not called');
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
             }
-          });
+          );
       });
     });
   });

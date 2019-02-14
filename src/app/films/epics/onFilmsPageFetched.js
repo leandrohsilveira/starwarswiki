@@ -14,19 +14,19 @@ function onFilmsPageFetched(actions$) {
     }),
     map(({ films, pageable, meta }) => ({
       effect: filmsLoaded(films, pageable),
-      meta,
-    })),
+      meta
+    }))
   );
 
   const [taskEffect$, directEffect$] = ofType$.pipe(
-    partition(({ meta }) => meta && meta.task),
+    partition(({ meta }) => meta && meta.task)
   );
 
   return merge(
     taskEffect$.pipe(
-      map(({ effect, meta }) => completeTask(meta.task, { effect })),
+      map(({ effect, meta }) => completeTask(meta.task, { effect }))
     ),
-    directEffect$.pipe(map(({ effect }) => effect)),
+    directEffect$.pipe(map(({ effect }) => effect))
   );
 }
 

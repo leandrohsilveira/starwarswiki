@@ -6,13 +6,13 @@ import tasksReducer, { tasksInitialState } from './tasks/reducer';
 export const initialState = {
   layout: layoutInitialState,
   films: filmsInitialState,
-  tasks: tasksInitialState,
+  tasks: tasksInitialState
 };
 
 const reducers = combineReducers({
   layout: layoutReducer,
   films: filmsReducer,
-  tasks: tasksReducer,
+  tasks: tasksReducer
 });
 
 export default reducers;

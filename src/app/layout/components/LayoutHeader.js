@@ -10,9 +10,7 @@ function LayoutHeader({ title }) {
       <LayoutHeaderLogo />
       <Navbar className="sticky-top" color="secondary" dark>
         <Container>
-          <NavbarBrand href="/">
-            {title || 'Star Wars Wiki'}
-          </NavbarBrand>
+          <NavbarBrand href="/">{title || 'Star Wars Wiki'}</NavbarBrand>
         </Container>
       </Navbar>
     </div>
@@ -20,11 +18,11 @@ function LayoutHeader({ title }) {
 }
 
 LayoutHeader.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string
 };
 
 LayoutHeader.defaultProps = {
-  title: '',
+  title: ''
 };
 
 export default LayoutHeader;
