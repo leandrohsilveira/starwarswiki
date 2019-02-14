@@ -40,7 +40,8 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.15.0",
     "eslint-plugin-jsx-a11y": "^6.2.0",
-    "eslint-plugin-react": "^7.12.4"
+    "eslint-plugin-react": "^7.12.4",
+    "@types/prop-types": "^15.5.9"
   },
   "jest": {
     "collectCoverageFrom": [
