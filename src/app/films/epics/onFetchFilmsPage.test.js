@@ -55,7 +55,9 @@ describe('onFetchFilmsPage epic', () => {
     });
   });
 
-  describe(`when an action with type "${filmsActionsTypes.FETCH_PAGE}" is emmited`, () => {
+  describe(`when an action with type "${
+    filmsActionsTypes.FETCH_PAGE
+  }" is emmited`, () => {
     const pageable = {
       page: 1,
       limit: 10,
@@ -66,25 +68,33 @@ describe('onFetchFilmsPage epic', () => {
       actions$.next(action);
     });
 
-    it(`it effects to an action with type "${filmsActionsTypes.PAGE_FETCHED}"`, (done) => {
+    it(`it effects to an action with type "${
+      filmsActionsTypes.PAGE_FETCHED
+    }"`, (done) => {
       combineLatest(
         actions$,
         mockEpic(onFetchFilmsPage(actions$, store$)),
         mockEpic(filmsEpics(actions$, store$)),
       )
         .pipe(take(1))
-        .subscribe(([latestAction, onFetchFilmsPageEffect, filmsEpicsEffect]) => {
-          try {
-            expect(onFetchFilmsPageEffect).not.toBe('not called');
-            expect(filmsEpicsEffect).not.toBe('not called');
-            expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
-            expect(onFetchFilmsPageEffect.type).toBe(filmsActionsTypes.PAGE_FETCHED);
-            expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.PAGE_FETCHED);
-            done();
-          } catch (e) {
-            done.fail(e);
-          }
-        });
+        .subscribe(
+          ([latestAction, onFetchFilmsPageEffect, filmsEpicsEffect]) => {
+            try {
+              expect(onFetchFilmsPageEffect).not.toBe('not called');
+              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
+              expect(onFetchFilmsPageEffect.type).toBe(
+                filmsActionsTypes.PAGE_FETCHED,
+              );
+              expect(filmsEpicsEffect.type).toBe(
+                filmsActionsTypes.PAGE_FETCHED,
+              );
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          },
+        );
     });
 
     it('it effects to an action with films array prop"', (done) => {
@@ -99,7 +109,9 @@ describe('onFetchFilmsPage epic', () => {
             expect(filmsEpicsEffect).not.toBe('not called');
             expect(onFetchFilmsPageEffect.films).toBeTruthy();
             expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
-            expect(onFetchFilmsPageEffect.films[0].name).toBe(filmsMockP1L10[0].name);
+            expect(onFetchFilmsPageEffect.films[0].name).toBe(
+              filmsMockP1L10[0].name,
+            );
             expect(filmsEpicsEffect.films).toBeTruthy();
             expect(filmsEpicsEffect.films.length).toBeTruthy();
             expect(filmsEpicsEffect.films[0].name).toBe(filmsMockP1L10[0].name);

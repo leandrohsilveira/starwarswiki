@@ -9,7 +9,10 @@ import epics from 'app/epics';
 const epicMiddleware = createEpicMiddleware();
 
 let composeEnhancers = compose;
-if (process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) {
+if (
+  process.env.NODE_ENV !== 'production'
+  && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+) {
   composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
 }
 

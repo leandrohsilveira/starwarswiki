@@ -59,16 +59,18 @@ describe('onLoadFilms epic', () => {
             mockEpic(filmsEpics(actions$, store$)),
           )
             .pipe(take(1))
-            .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
-              try {
-                expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
-                expect(onLoadFilmsEffect.type).toBe(tasksActionsTypes.SUBMIT);
-                expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.SUBMIT);
-                done();
-              } catch (e) {
-                done.fail(e);
-              }
-            });
+            .subscribe(
+              ([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
+                try {
+                  expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
+                  expect(onLoadFilmsEffect.type).toBe(tasksActionsTypes.SUBMIT);
+                  expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.SUBMIT);
+                  done();
+                } catch (e) {
+                  done.fail(e);
+                }
+              },
+            );
         });
 
         it('it effects to a action with "id" prop "fetchFilms#1#10"', (done) => {
@@ -96,8 +98,12 @@ describe('onLoadFilms epic', () => {
             .pipe(take(1))
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
-                expect(onLoadFilmsEffect.task.name).toBe('Fetching 10 films of page 1');
-                expect(filmsEpicsEffect.task.name).toBe('Fetching 10 films of page 1');
+                expect(onLoadFilmsEffect.task.name).toBe(
+                  'Fetching 10 films of page 1',
+                );
+                expect(filmsEpicsEffect.task.name).toBe(
+                  'Fetching 10 films of page 1',
+                );
                 done();
               } catch (e) {
                 done.fail(e);
@@ -116,9 +122,13 @@ describe('onLoadFilms epic', () => {
             .subscribe(([onLoadFilmsEffect, filmsEpicsEffect]) => {
               try {
                 expect(onLoadFilmsEffect.task.effect).toBeTruthy();
-                expect(onLoadFilmsEffect.task.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(onLoadFilmsEffect.task.effect.type).toBe(
+                  filmsActionsTypes.FETCH_PAGE,
+                );
                 expect(filmsEpicsEffect.task.effect).toBeTruthy();
-                expect(filmsEpicsEffect.task.effect.type).toBe(filmsActionsTypes.FETCH_PAGE);
+                expect(filmsEpicsEffect.task.effect.type).toBe(
+                  filmsActionsTypes.FETCH_PAGE,
+                );
                 done();
               } catch (e) {
                 done.fail(e);
@@ -136,12 +146,20 @@ describe('onLoadFilms epic', () => {
               try {
                 expect(onLoadFilmsEffect.task.effect).toBeTruthy();
                 expect(onLoadFilmsEffect.task.effect.pageable).toBeTruthy();
-                expect(onLoadFilmsEffect.task.effect.pageable.page).toBe(action.pageable.page);
-                expect(onLoadFilmsEffect.task.effect.pageable.limit).toBe(action.pageable.limit);
+                expect(onLoadFilmsEffect.task.effect.pageable.page).toBe(
+                  action.pageable.page,
+                );
+                expect(onLoadFilmsEffect.task.effect.pageable.limit).toBe(
+                  action.pageable.limit,
+                );
                 expect(filmsEpicsEffect.task.effect).toBeTruthy();
                 expect(filmsEpicsEffect.task.effect.pageable).toBeTruthy();
-                expect(filmsEpicsEffect.task.effect.pageable.page).toBe(action.pageable.page);
-                expect(filmsEpicsEffect.task.effect.pageable.limit).toBe(action.pageable.limit);
+                expect(filmsEpicsEffect.task.effect.pageable.page).toBe(
+                  action.pageable.page,
+                );
+                expect(filmsEpicsEffect.task.effect.pageable.limit).toBe(
+                  action.pageable.limit,
+                );
                 done();
               } catch (e) {
                 done.fail(e);
@@ -171,16 +189,18 @@ describe('onLoadFilms epic', () => {
             mockEpic(filmsEpics(actions$, store$)),
           )
             .pipe(take(1))
-            .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
-              try {
-                expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
-                expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.LOADED);
-                expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
-                done();
-              } catch (e) {
-                done.fail(e);
-              }
-            });
+            .subscribe(
+              ([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
+                try {
+                  expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
+                  expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.LOADED);
+                  expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
+                  done();
+                } catch (e) {
+                  done.fail(e);
+                }
+              },
+            );
         });
 
         it('it effects to a action with a "films" array as payload', (done) => {
@@ -193,7 +213,9 @@ describe('onLoadFilms epic', () => {
               try {
                 expect(onLoadFilmsEffect.films).toBeTruthy();
                 expect(onLoadFilmsEffect.films.length).toBeTruthy();
-                expect(onLoadFilmsEffect.films[0].name).toBe(filmsArray[0].name);
+                expect(onLoadFilmsEffect.films[0].name).toBe(
+                  filmsArray[0].name,
+                );
                 expect(filmsEpicsEffect.films).toBeTruthy();
                 expect(filmsEpicsEffect.films.length).toBeTruthy();
                 expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);
@@ -223,16 +245,18 @@ describe('onLoadFilms epic', () => {
             mockEpic(filmsEpics(actions$, store$)),
           )
             .pipe(take(1))
-            .subscribe(([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
-              try {
-                expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
-                expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.LOADED);
-                expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
-                done();
-              } catch (e) {
-                done.fail(e);
-              }
-            });
+            .subscribe(
+              ([latestAction, onLoadFilmsEffect, filmsEpicsEffect]) => {
+                try {
+                  expect(latestAction.type).toBe(filmsActionsTypes.LOAD);
+                  expect(onLoadFilmsEffect.type).toBe(filmsActionsTypes.LOADED);
+                  expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
+                  done();
+                } catch (e) {
+                  done.fail(e);
+                }
+              },
+            );
         });
 
         it('it effects to a action with a "films" array as payload', (done) => {
@@ -245,7 +269,9 @@ describe('onLoadFilms epic', () => {
               try {
                 expect(onLoadFilmsEffect.films).toBeTruthy();
                 expect(onLoadFilmsEffect.films.length).toBeTruthy();
-                expect(onLoadFilmsEffect.films[0].name).toBe(filmsArray[0].name);
+                expect(onLoadFilmsEffect.films[0].name).toBe(
+                  filmsArray[0].name,
+                );
                 expect(filmsEpicsEffect.films).toBeTruthy();
                 expect(filmsEpicsEffect.films.length).toBeTruthy();
                 expect(filmsEpicsEffect.films[0].name).toBe(filmsArray[0].name);

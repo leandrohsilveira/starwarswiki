@@ -27,16 +27,24 @@ function onLoadFilms(actions$, state$) {
   );
 
   const [localStorage$, fetch$] = elseLocalStorage$.pipe(
-    partition(([{ pageable }]) => !!window.localStorage.getItem(getFilmsId(pageable))),
+    partition(
+      ([{ pageable }]) => !!window.localStorage.getItem(getFilmsId(pageable)),
+    ),
   );
 
   return merge(
     memory$.pipe(
-      map(([{ pageable }, state]) => [pageable, state.films[getFilmsId(pageable)]]),
+      map(([{ pageable }, state]) => [
+        pageable,
+        state.films[getFilmsId(pageable)],
+      ]),
       map(([pageable, films]) => filmsLoaded(films, pageable)),
     ),
     localStorage$.pipe(
-      map(([{ pageable }]) => [pageable, window.localStorage.getItem(getFilmsId(pageable))]),
+      map(([{ pageable }]) => [
+        pageable,
+        window.localStorage.getItem(getFilmsId(pageable)),
+      ]),
       map(([pageable, films]) => [pageable, JSON.parse(films)]),
       map(([pageable, films]) => filmsLoaded(films, pageable)),
     ),

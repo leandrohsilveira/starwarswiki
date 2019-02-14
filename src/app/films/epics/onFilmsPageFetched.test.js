@@ -46,13 +46,17 @@ describe('onFilmsPageFetched epic', () => {
     });
   });
 
-  describe(`when an action with type "${filmsActionsTypes.PAGE_FETCHED}" is emitted`, () => {
+  describe(`when an action with type "${
+    filmsActionsTypes.PAGE_FETCHED
+  }" is emitted`, () => {
     describe('without meta task prop', () => {
       const films = [{ name: 'Film 1' }];
       const pageable = { page: 1, limit: 10 };
       const action = filmsPageFetched(films, pageable);
 
-      it(`it effects to an action with type "${filmsActionsTypes.LOADED}"`, (done) => {
+      it(`it effects to an action with type "${
+        filmsActionsTypes.LOADED
+      }"`, (done) => {
         actions$.next(action);
         combineLatest(
           actions$,
@@ -60,21 +64,25 @@ describe('onFilmsPageFetched epic', () => {
           mockEpic(filmsEpics(actions$, store$)),
         )
           .pipe(take(1))
-          .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
-            try {
-              expect(onFilmsPageFetchedEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
-              expect(latestAction).toBeTruthy();
-              expect(latestAction.type).toBe(action.type);
-              expect(onFilmsPageFetchedEffect).toBeTruthy();
-              expect(onFilmsPageFetchedEffect.type).toBe(filmsActionsTypes.LOADED);
-              expect(filmsEpicsEffect).toBeTruthy();
-              expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
-              done();
-            } catch (e) {
-              done.fail(e);
-            }
-          });
+          .subscribe(
+            ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
+              try {
+                expect(onFilmsPageFetchedEffect).not.toBe('not called');
+                expect(filmsEpicsEffect).not.toBe('not called');
+                expect(latestAction).toBeTruthy();
+                expect(latestAction.type).toBe(action.type);
+                expect(onFilmsPageFetchedEffect).toBeTruthy();
+                expect(onFilmsPageFetchedEffect.type).toBe(
+                  filmsActionsTypes.LOADED,
+                );
+                expect(filmsEpicsEffect).toBeTruthy();
+                expect(filmsEpicsEffect.type).toBe(filmsActionsTypes.LOADED);
+                done();
+              } catch (e) {
+                done.fail(e);
+              }
+            },
+          );
       });
 
       it('it inserts films array into localStorage with key "films#1#10"', (done) => {
@@ -90,7 +98,9 @@ describe('onFilmsPageFetched epic', () => {
               expect(onFilmsPageFetchedEffect).not.toBe('not called');
               expect(filmsEpicsEffect).not.toBe('not called');
               expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
-              const storedFilms = JSON.parse(window.localStorage.getItem('films#1#10'));
+              const storedFilms = JSON.parse(
+                window.localStorage.getItem('films#1#10'),
+              );
               expect(storedFilms).toBeTruthy();
               expect(storedFilms.length).toBeTruthy();
               expect(storedFilms[0].name).toBe(films[0].name);
@@ -117,7 +127,9 @@ describe('onFilmsPageFetched epic', () => {
       },
     };
 
-    it(`it effects to an action with type "${tasksActionsTypes.COMPLETE}"`, (done) => {
+    it(`it effects to an action with type "${
+      tasksActionsTypes.COMPLETE
+    }"`, (done) => {
       actions$.next(action);
       combineLatest(
         actions$,
@@ -125,21 +137,25 @@ describe('onFilmsPageFetched epic', () => {
         mockEpic(filmsEpics(actions$, store$)),
       )
         .pipe(take(1))
-        .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
-          try {
-            expect(onFilmsPageFetchedEffect).not.toBe('not called');
-            expect(filmsEpicsEffect).not.toBe('not called');
-            expect(latestAction).toBeTruthy();
-            expect(latestAction.type).toBe(action.type);
-            expect(onFilmsPageFetchedEffect).toBeTruthy();
-            expect(onFilmsPageFetchedEffect.type).toBe(tasksActionsTypes.COMPLETE);
-            expect(filmsEpicsEffect).toBeTruthy();
-            expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.COMPLETE);
-            done();
-          } catch (e) {
-            done.fail(e);
-          }
-        });
+        .subscribe(
+          ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
+            try {
+              expect(onFilmsPageFetchedEffect).not.toBe('not called');
+              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(latestAction).toBeTruthy();
+              expect(latestAction.type).toBe(action.type);
+              expect(onFilmsPageFetchedEffect).toBeTruthy();
+              expect(onFilmsPageFetchedEffect.type).toBe(
+                tasksActionsTypes.COMPLETE,
+              );
+              expect(filmsEpicsEffect).toBeTruthy();
+              expect(filmsEpicsEffect.type).toBe(tasksActionsTypes.COMPLETE);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          },
+        );
     });
 
     it('it effects to an action with "task" prop that is the same instance of source action meta task', (done) => {
@@ -150,21 +166,23 @@ describe('onFilmsPageFetched epic', () => {
         mockEpic(filmsEpics(actions$, store$)),
       )
         .pipe(take(1))
-        .subscribe(([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
-          try {
-            expect(onFilmsPageFetchedEffect).not.toBe('not called');
-            expect(filmsEpicsEffect).not.toBe('not called');
-            expect(latestAction).toBeTruthy();
-            expect(latestAction.type).toBe(action.type);
-            expect(onFilmsPageFetchedEffect).toBeTruthy();
-            expect(onFilmsPageFetchedEffect.task).toBe(action.meta.task);
-            expect(filmsEpicsEffect).toBeTruthy();
-            expect(filmsEpicsEffect.task).toBe(action.meta.task);
-            done();
-          } catch (e) {
-            done.fail(e);
-          }
-        });
+        .subscribe(
+          ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
+            try {
+              expect(onFilmsPageFetchedEffect).not.toBe('not called');
+              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(latestAction).toBeTruthy();
+              expect(latestAction.type).toBe(action.type);
+              expect(onFilmsPageFetchedEffect).toBeTruthy();
+              expect(onFilmsPageFetchedEffect.task).toBe(action.meta.task);
+              expect(filmsEpicsEffect).toBeTruthy();
+              expect(filmsEpicsEffect.task).toBe(action.meta.task);
+              done();
+            } catch (e) {
+              done.fail(e);
+            }
+          },
+        );
     });
 
     it('it inserts films array into localStorage with key "films#1#10"', (done) => {
@@ -180,7 +198,9 @@ describe('onFilmsPageFetched epic', () => {
             expect(onFilmsPageFetchedEffect).not.toBe('not called');
             expect(filmsEpicsEffect).not.toBe('not called');
             expect(window.localStorage.getItem('films#1#10')).toBeTruthy();
-            const storedFilms = JSON.parse(window.localStorage.getItem('films#1#10'));
+            const storedFilms = JSON.parse(
+              window.localStorage.getItem('films#1#10'),
+            );
             expect(storedFilms).toBeTruthy();
             expect(storedFilms.length).toBeTruthy();
             expect(storedFilms[0].name).toBe(films[0].name);

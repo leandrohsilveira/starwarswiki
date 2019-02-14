@@ -3,6 +3,10 @@ import onLoadFilms from './onLoadFilms';
 import onFetchFilmsPage from './onFetchFilmsPage';
 import onFilmsPageFetched from './onFilmsPageFetched';
 
-const filmsEpics = combineEpics(onLoadFilms, onFetchFilmsPage, onFilmsPageFetched);
+const filmsEpics = combineEpics(
+  onLoadFilms,
+  onFetchFilmsPage,
+  onFilmsPageFetched,
+);
 
 export default filmsEpics;

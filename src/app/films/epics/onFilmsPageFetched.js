@@ -18,10 +18,14 @@ function onFilmsPageFetched(actions$) {
     })),
   );
 
-  const [taskEffect$, directEffect$] = ofType$.pipe(partition(({ meta }) => meta && meta.task));
+  const [taskEffect$, directEffect$] = ofType$.pipe(
+    partition(({ meta }) => meta && meta.task),
+  );
 
   return merge(
-    taskEffect$.pipe(map(({ effect, meta }) => completeTask(meta.task, { effect }))),
+    taskEffect$.pipe(
+      map(({ effect, meta }) => completeTask(meta.task, { effect })),
+    ),
     directEffect$.pipe(map(({ effect }) => effect)),
   );
 }
