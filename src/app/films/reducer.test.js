@@ -1,5 +1,7 @@
 import filmsReducer, { filmsInitialState, filmsSelector } from './reducer';
-import filmsActionsTypes, { loadFilms, filmsLoaded, fetchFilmsPage } from './actions';
+import filmsActionsTypes, {
+  fetchFilmsPage, filmsLoaded, filmsPageFetched, loadFilms,
+} from './actions';
 
 const featureInitialState = {
   films: filmsInitialState,
@@ -17,37 +19,29 @@ describe('The films module reducer', () => {
   });
 
   describe(`when a "${filmsActionsTypes.LOAD}" action is provided`, () => {
-    describe('with initial state', () => {
+    describe('without a pageable action prop', () => {
+      const state = {
+        ...filmsInitialState,
+        pageable: {
+          page: 1,
+          limit: 40,
+        },
+      };
       const action = loadFilms();
-      it('it reduces to a state with "loading" true', () => {
-        const state = filmsInitialState;
+      it('it reduces to a state with the pageable of the action', () => {
         const result = filmsReducer(state, action);
-        expect(result.loading).toBeTruthy();
-        expect(result.loaded).toBeFalsy();
+        expect(result.pageable.page).toEqual(0);
+        expect(result.pageable.limit).toEqual(10);
       });
-    });
 
-    describe('with a truthy "loading" state', () => {
-      const action = loadFilms();
-      it('it reduces to a state with "loading" true', () => {
-        const state = {
-          ...filmsInitialState,
-          loading: true,
-        };
+      it('it reduces to a state with a different pageable of the previous state', () => {
         const result = filmsReducer(state, action);
-        expect(result.loading).toBeTruthy();
-        expect(result.loaded).toBeFalsy();
+        expect(result.pageable).not.toEqual(state.pageable);
       });
     });
 
     describe('with a pageable action prop', () => {
-      const state = {
-        ...filmsInitialState,
-        pageable: {
-          page: 0,
-          limit: 10,
-        },
-      };
+      const state = filmsInitialState;
       const pageable = {
         page: 1,
         limit: 20,
@@ -71,22 +65,19 @@ describe('The films module reducer', () => {
 
     describe('with initial state', () => {
       it('it reduces to a state with "films" array not empty', () => {
-        const state = filmsInitialState;
-        const result = filmsReducer(state, action);
+        const result = filmsReducer(filmsInitialState, action);
         expect(result.films).toEqual(films);
       });
 
       it('it reduces to a state with "loading" false', () => {
-        const state = filmsInitialState;
-        const result = filmsReducer(state, action);
+        const result = filmsReducer(filmsInitialState, action);
         expect(result.loading).toBeFalsy();
       });
     });
 
     describe('with a truthy "loading" state', () => {
       it('it reduces to a state with "films" array not empty', () => {
-        const state = filmsInitialState;
-        const result = filmsReducer(state, action);
+        const result = filmsReducer(filmsInitialState, action);
         expect(result.films).toEqual(films);
       });
 
@@ -101,9 +92,42 @@ describe('The films module reducer', () => {
     });
   });
 
-  describe(`when a "${filmsActionsTypes.FETCH_PAGE}" action is provided`, () => {
-    const action = fetchFilmsPage();
+  describe(`when an action with type "${
+    filmsActionsTypes.FETCH_PAGE
+  }" is emitted`, () => {
+    describe('without a pageable prop', () => {
+      const action = fetchFilmsPage();
 
+      it('it reduces to a state with a films pages map entry of "0#10" key with value = false', () => {
+        const result = filmsReducer(filmsInitialState, action);
+        const page = result.films['0#10'];
+        expect(page).toBeDefined();
+        expect(page).toBe(false);
+      });
+    });
+
+    describe('with a pageable prop', () => {
+      const pageable = {
+        page: 1,
+        limit: 30,
+      };
+      const action = fetchFilmsPage(pageable);
+
+      it('it reduces to a state with a films pages map entry of "1#30" key with value = false', () => {
+        const result = filmsReducer(filmsInitialState, action);
+
+        const page = result.films['1#30'];
+        expect(page).toBeDefined();
+        expect(page).toBe(false);
+      });
+    });
+  });
+
+
+  describe(`when an action with type "${
+    filmsActionsTypes.PAGE_FETCHED
+  }" is emitted`, () => {
+    const action = filmsPageFetched([]);
     it('it reduces to same state instance', () => {
       const state = filmsInitialState;
       const result = filmsReducer(state, action);
