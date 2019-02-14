@@ -30,7 +30,7 @@ describe('FilmList component', () => {
     expect(directorEl).toBeTruthy();
     const producerEl = getByText('Producer 1');
     expect(producerEl).toBeTruthy();
-    const releaseDate = getByText('January 1, 2019');
+    const releaseDate = getByText('May 25, 1977');
     expect(releaseDate).toBeTruthy();
   });
 
