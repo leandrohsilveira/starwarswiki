@@ -1,13 +1,16 @@
-import mockFetch from '__test-utils__/fetch.utils';
+import mockFetch, { mockResult } from '__test-utils__/fetch.utils';
 import { notCalledIn } from '__test-utils__/rxjs.utils';
 import { take } from 'rxjs/operators';
 import filmsService from './service';
 
 describe('The films service', () => {
   describe('fetchPage function', () => {
-    const filmsMockP1L10 = [{ name: 'Film 1' }];
-    const filmsMockP2L10 = [{ name: 'Film 11' }];
-    const filmsMockP2L50 = [{ name: 'Film 11' }, { name: 'Film 12' }];
+    const filmsMockP1L10 = mockResult([{ name: 'Film 1' }]);
+    const filmsMockP2L10 = mockResult([{ name: 'Film 11' }]);
+    const filmsMockP2L50 = mockResult([
+      { name: 'Film 11' },
+      { name: 'Film 12' }
+    ]);
     beforeAll(() => {
       jest.spyOn(global, 'fetch').mockImplementation(
         mockFetch({
@@ -32,9 +35,10 @@ describe('The films service', () => {
             notCalledIn(100),
             take(1)
           )
-          .subscribe(films => {
+          .subscribe(({ films, count }) => {
             try {
-              expect(films).toBe(filmsMockP1L10);
+              expect(films).toBe(filmsMockP1L10.results);
+              expect(count).toBe(filmsMockP1L10.count);
               done();
             } catch (e) {
               done.fail(e);
@@ -77,9 +81,10 @@ describe('The films service', () => {
             notCalledIn(100),
             take(1)
           )
-          .subscribe(films => {
+          .subscribe(({ films, count }) => {
             try {
-              expect(films).toBe(filmsMockP1L10);
+              expect(films).toBe(filmsMockP1L10.results);
+              expect(count).toBe(filmsMockP1L10.count);
               done();
             } catch (e) {
               done.fail(e);
@@ -124,9 +129,10 @@ describe('The films service', () => {
             notCalledIn(100),
             take(1)
           )
-          .subscribe(films => {
+          .subscribe(({ films, count }) => {
             try {
-              expect(films).toBe(filmsMockP1L10);
+              expect(films).toBe(filmsMockP1L10.results);
+              expect(count).toBe(filmsMockP1L10.count);
               done();
             } catch (e) {
               done.fail(e);
@@ -171,9 +177,10 @@ describe('The films service', () => {
             notCalledIn(100),
             take(1)
           )
-          .subscribe(films => {
+          .subscribe(({ films, count }) => {
             try {
-              expect(films).toBe(filmsMockP2L10);
+              expect(films).toBe(filmsMockP2L10.results);
+              expect(count).toBe(filmsMockP2L10.count);
               done();
             } catch (e) {
               done.fail(e);
@@ -218,9 +225,10 @@ describe('The films service', () => {
             notCalledIn(100),
             take(1)
           )
-          .subscribe(films => {
+          .subscribe(({ films, count }) => {
             try {
-              expect(films).toBe(filmsMockP2L50);
+              expect(films).toBe(filmsMockP2L50.results);
+              expect(count).toBe(filmsMockP2L50.count);
               done();
             } catch (e) {
               done.fail(e);

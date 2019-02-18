@@ -5,4 +5,11 @@ function mockFetch(mappings) {
     });
 }
 
+export function mockResult(results, count = results.length) {
+  return {
+    count,
+    results
+  };
+}
+
 export default mockFetch;
