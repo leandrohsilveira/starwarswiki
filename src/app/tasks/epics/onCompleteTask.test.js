@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { take, skip } from 'rxjs/operators';
-import mockEpic from '__test-utils__/rxjs.utils';
+import mockEpic, { NOT_CALLED } from '__test-utils__/rxjs.utils';
 import onCompleteTask from './onCompleteTask';
 import tasksActionsTypes, { completeTask } from '../actions';
 import tasksEpics from '.';
@@ -131,8 +131,8 @@ describe('onCompleteTask epic', () => {
             ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
               try {
                 expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-                expect(onCompleteTaskEffect).toEqual('not called');
-                expect(tasksEpicsEffect).toEqual('not called');
+                expect(onCompleteTaskEffect).toEqual(NOT_CALLED);
+                expect(tasksEpicsEffect).toEqual(NOT_CALLED);
                 done();
               } catch (e) {
                 done.fail(e);
@@ -158,8 +158,8 @@ describe('onCompleteTask epic', () => {
             ([latestAction, onCompleteTaskEffect, tasksEpicsEffect]) => {
               try {
                 expect(latestAction.type).toEqual(tasksActionsTypes.COMPLETE);
-                expect(onCompleteTaskEffect).toEqual('not called');
-                expect(tasksEpicsEffect).toEqual('not called');
+                expect(onCompleteTaskEffect).toEqual(NOT_CALLED);
+                expect(tasksEpicsEffect).toEqual(NOT_CALLED);
                 done();
               } catch (e) {
                 done.fail(e);

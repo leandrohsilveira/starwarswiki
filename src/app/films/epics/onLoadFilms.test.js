@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import mockEpic from '__test-utils__/rxjs.utils';
+import mockEpic, { NOT_CALLED } from '__test-utils__/rxjs.utils';
 import tasksActionsTypes from 'app/tasks/actions';
 import onLoadFilms from './onLoadFilms';
 import filmsActionsTypes, { loadFilms } from '../actions';
@@ -36,7 +36,7 @@ describe('onLoadFilms epic', () => {
           try {
             expect(latestAction).toBeTruthy();
             expect(latestAction.type).toBe(action.type);
-            expect(onLoadFilmsEffect).toBe('not called');
+            expect(onLoadFilmsEffect).toBe(NOT_CALLED);
             done();
           } catch (e) {
             done.fail(e);

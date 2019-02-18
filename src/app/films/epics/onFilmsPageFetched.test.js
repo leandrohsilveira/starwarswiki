@@ -1,5 +1,5 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import mockEpic from '__test-utils__/rxjs.utils';
+import mockEpic, { NOT_CALLED } from '__test-utils__/rxjs.utils';
 import { take } from 'rxjs/operators';
 import tasksActionsTypes from 'app/tasks/actions';
 import { filmsInitialState } from '../reducer';
@@ -37,7 +37,7 @@ describe('onFilmsPageFetched epic', () => {
           try {
             expect(latestAction).toBeTruthy();
             expect(latestAction.type).toBe(action.type);
-            expect(onFilmsPageFetchedEffect).toBe('not called');
+            expect(onFilmsPageFetchedEffect).toBe(NOT_CALLED);
             done();
           } catch (e) {
             done.fail(e);
@@ -67,8 +67,8 @@ describe('onFilmsPageFetched epic', () => {
           .subscribe(
             ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
               try {
-                expect(onFilmsPageFetchedEffect).not.toBe('not called');
-                expect(filmsEpicsEffect).not.toBe('not called');
+                expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+                expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
                 expect(latestAction).toBeTruthy();
                 expect(latestAction.type).toBe(action.type);
                 expect(onFilmsPageFetchedEffect).toBeTruthy();
@@ -95,8 +95,8 @@ describe('onFilmsPageFetched epic', () => {
           .pipe(take(1))
           .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFilmsPageFetchedEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+              expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
               expect(window.localStorage.getItem('films#1#10#1')).toBeTruthy();
               const storedFilms = JSON.parse(
                 window.localStorage.getItem('films#1#10#1')
@@ -121,8 +121,8 @@ describe('onFilmsPageFetched epic', () => {
           .pipe(take(1))
           .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFilmsPageFetchedEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+              expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
               const count = window.localStorage.getItem('films#count');
               expect(count).toBeTruthy();
               expect(count).toBe('1');
@@ -161,8 +161,8 @@ describe('onFilmsPageFetched epic', () => {
           .subscribe(
             ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
               try {
-                expect(onFilmsPageFetchedEffect).not.toBe('not called');
-                expect(filmsEpicsEffect).not.toBe('not called');
+                expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+                expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
                 expect(latestAction).toBeTruthy();
                 expect(latestAction.type).toBe(action.type);
                 expect(onFilmsPageFetchedEffect).toBeTruthy();
@@ -190,8 +190,8 @@ describe('onFilmsPageFetched epic', () => {
           .subscribe(
             ([latestAction, onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
               try {
-                expect(onFilmsPageFetchedEffect).not.toBe('not called');
-                expect(filmsEpicsEffect).not.toBe('not called');
+                expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+                expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
                 expect(latestAction).toBeTruthy();
                 expect(latestAction.type).toBe(action.type);
                 expect(onFilmsPageFetchedEffect).toBeTruthy();
@@ -216,8 +216,8 @@ describe('onFilmsPageFetched epic', () => {
           .pipe(take(1))
           .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFilmsPageFetchedEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+              expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
               expect(window.localStorage.getItem('films#1#10#1')).toBeTruthy();
               const storedFilms = JSON.parse(
                 window.localStorage.getItem('films#1#10#1')
@@ -242,8 +242,8 @@ describe('onFilmsPageFetched epic', () => {
           .pipe(take(1))
           .subscribe(([onFilmsPageFetchedEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFilmsPageFetchedEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(onFilmsPageFetchedEffect).not.toBe(NOT_CALLED);
+              expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
               const count = window.localStorage.getItem('films#count');
               expect(count).toBeTruthy();
               expect(count).toBe('1');

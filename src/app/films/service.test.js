@@ -1,5 +1,5 @@
 import mockFetch, { mockResult } from '__test-utils__/fetch.utils';
-import { notCalledIn } from '__test-utils__/rxjs.utils';
+import { NOT_CALLED, notCalledIn } from '__test-utils__/rxjs.utils';
 import { take } from 'rxjs/operators';
 import filmsService from './service';
 
@@ -54,7 +54,7 @@ describe('The films service', () => {
           )
           .subscribe(films => {
             try {
-              expect(films).not.toBe('not called');
+              expect(films).not.toBe(NOT_CALLED);
               expect(global.fetch).toHaveBeenCalledTimes(1);
               expect(global.fetch).toHaveBeenCalledWith(
                 '/api/films?page=1&limit=10'
@@ -100,7 +100,7 @@ describe('The films service', () => {
           )
           .subscribe(films => {
             try {
-              expect(films).not.toBe('not called');
+              expect(films).not.toBe(NOT_CALLED);
               expect(global.fetch).toHaveBeenCalledTimes(1);
               expect(global.fetch).toHaveBeenCalledWith(
                 '/api/films?page=1&limit=10'
@@ -148,7 +148,7 @@ describe('The films service', () => {
           )
           .subscribe(films => {
             try {
-              expect(films).not.toBe('not called');
+              expect(films).not.toBe(NOT_CALLED);
               expect(global.fetch).toHaveBeenCalledTimes(1);
               expect(global.fetch).toHaveBeenCalledWith(
                 '/api/films?page=1&limit=10'
@@ -196,7 +196,7 @@ describe('The films service', () => {
           )
           .subscribe(films => {
             try {
-              expect(films).not.toBe('not called');
+              expect(films).not.toBe(NOT_CALLED);
               expect(global.fetch).toHaveBeenCalledTimes(1);
               expect(global.fetch).toHaveBeenCalledWith(
                 '/api/films?page=2&limit=10'
@@ -244,7 +244,7 @@ describe('The films service', () => {
           )
           .subscribe(films => {
             try {
-              expect(films).not.toBe('not called');
+              expect(films).not.toBe(NOT_CALLED);
               expect(global.fetch).toHaveBeenCalledTimes(1);
               expect(global.fetch).toHaveBeenCalledWith(
                 '/api/films?page=2&limit=50'

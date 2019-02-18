@@ -1,5 +1,5 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import mockEpic from '__test-utils__/rxjs.utils';
+import mockEpic, { NOT_CALLED } from '__test-utils__/rxjs.utils';
 import mockFetch, { mockResult } from '__test-utils__/fetch.utils';
 import { take } from 'rxjs/operators';
 import onFetchFilmsPage from './onFetchFilmsPage';
@@ -46,7 +46,7 @@ describe('onFetchFilmsPage epic', () => {
           try {
             expect(latestAction).toBeTruthy();
             expect(latestAction.type).toBe(action.type);
-            expect(onFetchFilmsPageEffect).toBe('not called');
+            expect(onFetchFilmsPageEffect).toBe(NOT_CALLED);
             done();
           } catch (e) {
             done.fail(e);
@@ -80,8 +80,8 @@ describe('onFetchFilmsPage epic', () => {
         .subscribe(
           ([latestAction, onFetchFilmsPageEffect, filmsEpicsEffect]) => {
             try {
-              expect(onFetchFilmsPageEffect).not.toBe('not called');
-              expect(filmsEpicsEffect).not.toBe('not called');
+              expect(onFetchFilmsPageEffect).not.toBe(NOT_CALLED);
+              expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
               expect(latestAction.type).toBe(filmsActionsTypes.FETCH_PAGE);
               expect(onFetchFilmsPageEffect.type).toBe(
                 filmsActionsTypes.PAGE_FETCHED
@@ -105,8 +105,8 @@ describe('onFetchFilmsPage epic', () => {
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
           try {
-            expect(onFetchFilmsPageEffect).not.toBe('not called');
-            expect(filmsEpicsEffect).not.toBe('not called');
+            expect(onFetchFilmsPageEffect).not.toBe(NOT_CALLED);
+            expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
             expect(onFetchFilmsPageEffect.films).toBeTruthy();
             expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
             expect(onFetchFilmsPageEffect.films[0].name).toBe(
@@ -132,8 +132,8 @@ describe('onFetchFilmsPage epic', () => {
         .pipe(take(1))
         .subscribe(([onFetchFilmsPageEffect, filmsEpicsEffect]) => {
           try {
-            expect(onFetchFilmsPageEffect).not.toBe('not called');
-            expect(filmsEpicsEffect).not.toBe('not called');
+            expect(onFetchFilmsPageEffect).not.toBe(NOT_CALLED);
+            expect(filmsEpicsEffect).not.toBe(NOT_CALLED);
             expect(onFetchFilmsPageEffect.pageable).toBeTruthy();
             expect(onFetchFilmsPageEffect.pageable.page).toBe(pageable.page);
             expect(onFetchFilmsPageEffect.pageable.limit).toBe(pageable.limit);
