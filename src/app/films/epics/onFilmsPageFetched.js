@@ -7,10 +7,11 @@ import filmsActionsTypes, { filmsLoaded } from '../actions';
 function onFilmsPageFetched(actions$) {
   const ofType$ = actions$.pipe(
     ofType(filmsActionsTypes.PAGE_FETCHED),
-    tap(({ films, pageable }) => {
+    tap(({ films, count, pageable }) => {
       const stringify = JSON.stringify(films);
-      const key = `films#${pageable.page}#${pageable.limit}`;
+      const key = `films#${pageable.page}#${pageable.limit}#${count}`;
       window.localStorage.setItem(key, stringify);
+      window.localStorage.setItem('films#count', count);
     }),
     map(({ films, pageable, meta }) => ({
       effect: filmsLoaded(films, pageable),

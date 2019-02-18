@@ -24,11 +24,12 @@ export const fetchFilmsPage = (pageable = filmsInitialState.pageable) => ({
 });
 
 export const filmsPageFetched = (
-  films,
+  { films, count },
   pageable = filmsInitialState.pageable
 ) => ({
   type: filmsActionsTypes.PAGE_FETCHED,
   films,
+  count,
   pageable
 });
 

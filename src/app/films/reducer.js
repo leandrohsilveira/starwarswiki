@@ -2,6 +2,7 @@ import filmsActionsTypes from './actions';
 
 export const filmsInitialState = {
   films: {},
+  count: null,
   pageable: {
     page: 0,
     limit: 10
