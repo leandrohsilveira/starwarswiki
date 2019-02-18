@@ -168,15 +168,16 @@ describe('onLoadFilms epic', () => {
         });
       });
 
-      describe('and pageable is present in films map with "films#1#10" key', () => {
+      describe('and pageable is present in films map with "films#1#10#1" key', () => {
         const filmsArray = [{ name: 'Film 1' }];
         beforeEach(() => {
           store$.next({
             films: {
               ...featureInitialState.films,
               films: {
-                'films#1#10': filmsArray
-              }
+                'films#1#10#1': filmsArray
+              },
+              count: 1
             }
           });
           actions$.next(action);
@@ -227,10 +228,14 @@ describe('onLoadFilms epic', () => {
         });
       });
 
-      describe('and pageable is in local storage with "films#1#10" key', () => {
+      describe('and pageable is in local storage with "films#1#10#1" key', () => {
         const filmsArray = [{ name: 'Film 1' }];
         beforeEach(() => {
-          window.localStorage.setItem('films#1#10', JSON.stringify(filmsArray));
+          window.localStorage.setItem(
+            'films#1#10#1',
+            JSON.stringify(filmsArray)
+          );
+          window.localStorage.setItem('films#count', '1');
           actions$.next(action);
         });
 
