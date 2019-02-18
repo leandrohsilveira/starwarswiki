@@ -34,6 +34,10 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
         }
       };
     case filmsActionsTypes.PAGE_FETCHED:
+      return {
+        ...state,
+        count: payload.count
+      };
     default:
       return state;
   }

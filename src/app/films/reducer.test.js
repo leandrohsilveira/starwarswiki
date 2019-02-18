@@ -121,10 +121,9 @@ describe('The films module reducer', () => {
     filmsActionsTypes.PAGE_FETCHED
   }" is emitted`, () => {
     const action = filmsPageFetched([]);
-    it('it reduces to same state instance', () => {
-      const state = filmsInitialState;
-      const result = filmsReducer(state, action);
-      expect(result).toBe(state);
+    it('it reduces to a state with same "count" from the action payload', () => {
+      const result = filmsReducer(filmsInitialState, action);
+      expect(result.count).toBe(action.count);
     });
   });
 });
