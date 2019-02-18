@@ -2,15 +2,17 @@ import filmsActionsTypes from './actions';
 
 export const filmsInitialState = {
   films: {},
+  loading: {},
   count: null,
   pageable: {
-    page: 0,
+    page: 1,
     limit: 10
   }
 };
 
-function getPageKey({ page, limit }) {
-  return `${page}#${limit}`;
+function getPageKey({ page, limit }, count = null) {
+  const countTxt = count !== null ? `#${count}` : '';
+  return `${page}#${limit}${countTxt}`;
 }
 
 function filmsReducer(state = filmsInitialState, { type, ...payload }) {
@@ -20,9 +22,9 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
     case filmsActionsTypes.FETCH_PAGE:
       return {
         ...state,
-        films: {
-          ...state.films,
-          [getPageKey(payload.pageable)]: false
+        loading: {
+          ...state.loading,
+          [getPageKey(payload.pageable)]: true
         }
       };
     case filmsActionsTypes.LOADED:
@@ -30,12 +32,15 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
         ...state,
         films: {
           ...state.films,
-          [getPageKey(payload.pageable)]: payload.films
+          [getPageKey(payload.pageable, payload.count)]: payload.films
         }
       };
     case filmsActionsTypes.PAGE_FETCHED:
       return {
         ...state,
+        loading: {
+          [getPageKey(payload.pageable)]: false
+        },
         count: payload.count
       };
     default:
@@ -44,5 +49,11 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
 }
 
 export const filmsSelector = state => state.films;
+
+export const filmsPageSelector = (state, pageable, count) =>
+  filmsSelector(state).films[getPageKey(pageable, count)];
+
+export const filmsPageLoadingSelector = (state, pageable) =>
+  filmsSelector(state).loading[getPageKey(pageable)];
 
 export default filmsReducer;

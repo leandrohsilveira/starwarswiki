@@ -12,9 +12,13 @@ export const loadFilms = (pageable = filmsInitialState.pageable) => ({
   pageable
 });
 
-export const filmsLoaded = (films, pageable = filmsInitialState.pageable) => ({
+export const filmsLoaded = (
+  { films, count },
+  pageable = filmsInitialState.pageable
+) => ({
   type: filmsActionsTypes.LOADED,
   films,
+  count,
   pageable
 });
 

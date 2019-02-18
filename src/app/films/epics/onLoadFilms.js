@@ -33,7 +33,7 @@ function onLoadFilms(actions$, state$) {
           }
         }
         if (films) {
-          return filmsLoaded(films, pageable);
+          return filmsLoaded({ films, count }, pageable);
         }
       }
       return submitTask({
