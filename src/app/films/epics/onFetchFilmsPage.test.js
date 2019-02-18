@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import mockEpic from '__test-utils__/rxjs.utils';
-import mockFetch from '__test-utils__/fetch.utils';
+import mockFetch, { mockResult } from '__test-utils__/fetch.utils';
 import { take } from 'rxjs/operators';
 import onFetchFilmsPage from './onFetchFilmsPage';
 import { filmsInitialState } from '../reducer';
@@ -12,7 +12,7 @@ const featureInitialState = {
 };
 
 describe('onFetchFilmsPage epic', () => {
-  const filmsMockP1L10 = [{ name: 'Film 1' }];
+  const filmsMockP1L10 = mockResult([{ name: 'Film 1' }]);
 
   let actions$;
   let store$;
@@ -97,7 +97,7 @@ describe('onFetchFilmsPage epic', () => {
         );
     });
 
-    it('it effects to an action with films array prop"', done => {
+    it('it effects to an action with films array prop', done => {
       combineLatest(
         mockEpic(onFetchFilmsPage(actions$, store$)),
         mockEpic(filmsEpics(actions$, store$))
@@ -110,11 +110,13 @@ describe('onFetchFilmsPage epic', () => {
             expect(onFetchFilmsPageEffect.films).toBeTruthy();
             expect(onFetchFilmsPageEffect.films.length).toBeTruthy();
             expect(onFetchFilmsPageEffect.films[0].name).toBe(
-              filmsMockP1L10[0].name
+              filmsMockP1L10.results[0].name
             );
             expect(filmsEpicsEffect.films).toBeTruthy();
             expect(filmsEpicsEffect.films.length).toBeTruthy();
-            expect(filmsEpicsEffect.films[0].name).toBe(filmsMockP1L10[0].name);
+            expect(filmsEpicsEffect.films[0].name).toBe(
+              filmsMockP1L10.results[0].name
+            );
             done();
           } catch (e) {
             done.fail(e);

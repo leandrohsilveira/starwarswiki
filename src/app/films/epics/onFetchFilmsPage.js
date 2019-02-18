@@ -8,9 +8,9 @@ function onFetchFilmsPage(actions$) {
     ofType(filmsActionsTypes.FETCH_PAGE),
     switchMap(({ pageable }) => {
       const result$ = filmsService.fetchPage(pageable);
-      return result$.pipe(map(films => [pageable, films]));
+      return result$.pipe(map(result => [pageable, result]));
     }),
-    map(([pageable, films]) => filmsPageFetched(films, pageable))
+    map(([pageable, result]) => filmsPageFetched(result, pageable))
   );
 }
 
