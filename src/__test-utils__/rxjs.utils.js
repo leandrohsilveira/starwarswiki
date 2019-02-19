@@ -39,6 +39,7 @@ export function combineMockedEpics(...epics) {
 
   function spyEpic(actions$, store$) {
     return actions$.pipe(
+      filter(({ type }) => type !== '@@epicSpy'),
       withLatestFrom(store$),
       map(([action, state]) => ({ action, state })),
       map(store => ({

@@ -6,15 +6,15 @@ import {
   NOT_CALLED,
   spyType
 } from '__test-utils__/rxjs.utils';
+import mockFetch, { mockResult } from '__test-utils__/fetch.utils';
 import { createTestStore } from '__test-utils__/redux.utils';
-import tasksEpics from 'app/tasks/epics';
 
+import tasksEpics from 'app/tasks/epics';
 import tasksReducer, { tasksInitialState } from 'app/tasks/reducer';
 import filmsReducer, { filmsInitialState } from '../reducer';
 import filmsEpics from '../epics';
 import FilmsProvider from './FilmsProvider';
 import filmsActionsTypes from '../actions';
-import mockFetch, { mockResult } from '../../../__test-utils__/fetch.utils';
 
 const [epics, spy$] = combineMockedEpics(filmsEpics, tasksEpics);
 
@@ -32,17 +32,19 @@ const store = createTestStore(
 
 describe('FilmsProvider component', () => {
   beforeAll(() => {
-    mockFetch({
-      '/api/films?page=0&limit=10': mockResult([
-        {
-          episode_id: 1,
-          title: 'Film 1',
-          director: 'Director 1',
-          producer: 'Producer 1',
-          release_date: '2019-01-01'
-        }
-      ])
-    });
+    jest.spyOn(global, 'fetch').mockImplementation(
+      mockFetch({
+        '/api/films?page=1&limit=10': mockResult([
+          {
+            episode_id: 1,
+            title: 'Film 1',
+            director: 'Director 1',
+            producer: 'Producer 1',
+            release_date: '2019-01-01'
+          }
+        ])
+      })
+    );
   });
 
   function mount() {

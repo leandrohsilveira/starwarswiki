@@ -50,6 +50,10 @@ function filmsReducer(state = filmsInitialState, { type, ...payload }) {
 
 export const filmsSelector = state => state.films;
 
+export const filmsCountSelector = state => filmsSelector(state).count;
+
+export const filmsPageableSelector = state => filmsSelector(state).pageable;
+
 export const filmsPageSelector = (state, pageable, count) =>
   filmsSelector(state).films[getPageKey(pageable, count)];
 
